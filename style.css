@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+  padding: 0;
+  color: #000000;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  box-sizing: border-box;
+}
+
+.page-header {
+  min-height: 100px;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0;
+  padding-top: 60px;
+  background-color: rgb(241, 241, 241);
+  box-shadow: 0px -2px 5px 4px rgba(168,166,168,1);
+  box-sizing: border-box;
+}
+
+.page-header__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.wrapper {
+  margin: 0 50px;
+  padding: 0;
+}
+
+.buttons {
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.btn {
+  margin: 0;
+  padding: 5px 10px;
+  color: #ffffff;
+  font-size: 14px;
+  background-color: rgb(0, 103, 209);
+  border: none;
+  border-radius: 5px;
+}
+
+.btn:first-child {
+  margin-right: 8px;
+}
+
+.date-navigation {
+  display: flex;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.month {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+  border: 1px solid black;
+}
+
+.week {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.day {
+  min-height: 98px;
+  flex-grow: 1;
+  height: 10px;
+  border: 1px solid black;
+}
