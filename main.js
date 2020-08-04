@@ -33,21 +33,23 @@ window.addEventListener('DOMContentLoaded', () => {
     'Воскресение'
   ];
 
-  let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of each year
   let monthCopy = month;
 
   const element = document.querySelector('.today-month__date');
 
-  function renderMonth() {
+  function renderMonth(year) {
     element.textContent = `${monthNames[monthCopy]} ${year}`;
   }
 
-  renderMonth();
+  renderMonth(year);
 
   const prevMonth = document.querySelector('.last-month'),
         nextMonth = document.querySelector('.next-month');
 
   let monthCount;
+
+  let highYears = [];
 
   function createThatMonth(a) {
     fullDate = fullDate.split('-');
@@ -59,29 +61,48 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     fullDate = fullDate.join('-');
-    console.log(fullDate);
 
     setFirstDate(fullDate);
-    createFirstWeek();
-    createFirstMonth();
   }
 
+  function generateHighYears(count) {
+    let someDate = new Date('1972-01-01'),
+        someYear = someDate.getFullYear();
+
+    for (var i = 0; i < count; i++) {
+      highYears.push(someYear);
+      someYear = highYears[i] + 4;
+    }
+  }
+
+  generateHighYears(20);
+
   function renderPreviousMonth() {
+    moy[1] = 28;
     if (monthCount === 11) {
-      renderMonth();
+      renderMonth(year - 1);
       monthCount--;
+      year = year - 1;
     } else {
       monthCopy--;
-      renderMonth();
+      renderMonth(year);
     }
 
     createThatMonth(monthCopy + 1);
 
     if (element.textContent === `${monthNames[0]} ${year}`) {
-      year = year - 1;
       monthCount = 11;
       monthCopy = monthCount;
     }
+
+    highYears.forEach((item, i) => {
+      if (year === item) {
+        moy[1] = 29;
+      }
+    });
+
+    createFirstWeek();
+    createFirstMonth();
   }
 
   prevMonth.addEventListener('click', () => {
@@ -89,21 +110,32 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   function renderNextMonth() {
+    moy[1] = 28;
+
     if (monthCount === 0) {
-      renderMonth();
+      renderMonth(year + 1);
       monthCount++;
+      year = year + 1;
     } else {
       monthCopy++;
-      renderMonth();
+      renderMonth(year);
     }
 
     createThatMonth(monthCopy + 1);
 
     if (element.textContent == `${monthNames[11]} ${year}`) {
-      year = year + 1;
       monthCount = 0;
       monthCopy = monthCount;
     }
+
+    highYears.forEach((item, i) => {
+      if (year === item) {
+        moy[1] = 29;
+      }
+    });
+
+    createFirstWeek();
+    createFirstMonth();
   }
 
   nextMonth.addEventListener('click', () => {
@@ -163,7 +195,6 @@ window.addEventListener('DOMContentLoaded', () => {
       elem.textContent = ``;
     });
 
-
     if (firstWeekDay === 0) {
       firstWeekDay = 7;
       for (var n = 1; n <= moy[monthCopy]; n++) {
@@ -182,8 +213,6 @@ window.addEventListener('DOMContentLoaded', () => {
         elem.textContent = `${(firstDay + i)}`;
       }
     });
-
-    console.log(newArray);
   }
 
   createFirstMonth();
