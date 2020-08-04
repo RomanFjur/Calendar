@@ -23,6 +23,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  height: 30px;
 }
 
 .wrapper {
@@ -31,6 +32,7 @@ body {
 }
 
 .buttons {
+  min-width: 200px;
   margin: 0;
   margin-bottom: 20px;
   padding: 0;
@@ -41,10 +43,12 @@ body {
   margin: 0;
   padding: 5px 10px;
   color: #ffffff;
+  text-shadow: 0px 1px 2px #00468e;
   font-size: 14px;
   background-color: rgb(0, 103, 209);
   border: none;
   border-radius: 3px;
+  box-shadow: 0px 1.5px 2px 0px #b4babe;
 }
 
 .btn:first-child {
@@ -134,8 +138,15 @@ body {
   margin-right: 10px;
 }
 
+.page-header__search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .search {
-  position: relative;
+  -webkit-appearance: none;
+  display: block;
   width: 260px;
   height: 30px;
   margin: 0;
@@ -148,4 +159,13 @@ body {
 
 .search::placeholder {
   color: rgb(209, 209, 209);
+}
+
+span {
+  display: block;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  margin-right: 10px;
+  padding: 0;
 }
