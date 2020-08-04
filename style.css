@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   color: #000000;
+  font-family: 'Helvetica';
   font-size: 14px;
   font-weight: normal;
   font-style: normal;
@@ -44,6 +45,7 @@ body {
   padding: 5px 10px;
   color: #ffffff;
   text-shadow: 0px 1px 2px #00468e;
+  font-family: 'Helvetica';
   font-size: 14px;
   background-color: rgb(0, 103, 209);
   border: none;
@@ -63,9 +65,9 @@ body {
 }
 
 .today-month__date {
-  width: 120px;
+  width: 130px;
   margin: 0;
-  padding: 0 10px;
+  padding: 0;
   font-size: 18px;
   text-align: center;
 }
@@ -130,6 +132,10 @@ body {
   border: none;
   border-radius: 4px;
   color: #868686;
+  font-family: 'Helvetica';
+  line-height: 15px;
+  text-align: center;
+  vertical-align: center;
   background-color: #ffffff;
   box-shadow: inset 0px 0px 2px 1px rgba(168,166,168,1);
 }
@@ -151,6 +157,7 @@ body {
   height: 30px;
   margin: 0;
   padding: 5px 10px;
+  font-family: 'Helvetica';
   font-size: 14px;
   border: none;
   border-radius: 3px;
