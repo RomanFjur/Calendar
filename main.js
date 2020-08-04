@@ -79,6 +79,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   generateHighYears(20);
 
+  //Функция переключения месяца назад
+
   function renderPreviousMonth() {
     moy[1] = 28;
     if (leftCount === 11) {
@@ -110,6 +112,8 @@ window.addEventListener('DOMContentLoaded', () => {
   prevMonth.addEventListener('click', () => {
     renderPreviousMonth();
   });
+
+  //Функция переключения месяца вперед
 
   function renderNextMonth() {
     moy[1] = 28;
@@ -144,11 +148,14 @@ window.addEventListener('DOMContentLoaded', () => {
     renderNextMonth();
   });
 
+  //Далее функции создания первой недели в месяце, текущего месяца и последующих месяцев
+
   let firstWeek = document.querySelector('.first-week'),
       firstWeekDays = firstWeek.querySelectorAll('.description'),
       weekDays = document.querySelectorAll('.description');
 
   let firstDate,
+      firstYear,
       firstWeekDay,
       firstDay,
       firstMonth;
@@ -159,6 +166,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function setFirstDate(fullDate) {
     return firstDate = new Date(fullDate),
+          firstYear = firstDate.getFullYear(),
           firstWeekDay = firstDate.getDay(),
           firstDay = firstDate.getDate(),
           firstMonth = firstDate.getMonth();
