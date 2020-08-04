@@ -36,7 +36,8 @@ window.addEventListener('DOMContentLoaded', () => {
   let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of each year
   let monthCopy = month;
 
-  const element = document.querySelector('.today-month__date');
+  const element = document.querySelector('.today-month__date'),
+        parents = document.querySelectorAll('.day');
 
   function renderMonth(year) {
     element.textContent = `${monthNames[monthCopy]} ${year}`;
@@ -103,7 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     createFirstWeek();
-    createFirstMonth();
+    createMonth();
   }
 
   prevMonth.addEventListener('click', () => {
@@ -136,7 +137,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     createFirstWeek();
-    createFirstMonth();
+    createMonth();
   }
 
   nextMonth.addEventListener('click', () => {
@@ -153,6 +154,7 @@ window.addEventListener('DOMContentLoaded', () => {
       firstMonth;
 
   let newArray = [];
+  let parentsArray = [];
   let fullDate = '2020-08-01';
 
   function setFirstDate(fullDate) {
@@ -166,44 +168,32 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function createFirstWeek() {
     newArray = [];
+    parentsArray = [];
+
+    weekDays.forEach((elem, i) => {
+      elem.textContent = ``;
+    });
 
     firstWeekDays.forEach((p, i) => {
       p.textContent = `${weekdayNames[i]}`;
       p.classList.remove('first-day');
     });
-
-    for (var i = 0; i < firstWeekDays.length; i++) {
-      if (i === firstWeekDay - 1) {
-
-        firstWeekDays[i].textContent = `${weekdayNames[firstWeekDay - 1]}, ${firstDay}`;
-        firstWeekDays[i].classList.add('first-day');
-
-      } else if (firstWeekDay === 0) {
-        firstWeekDay = 7;
-
-        if (i === firstWeekDay - 1) {
-          firstWeekDays[i].textContent = `${weekdayNames[firstWeekDay - 1]}, ${firstDay}`;
-          firstWeekDays[i].classList.add('first-day');
-        }
-      }
-    }
   }
 
   createFirstWeek();
 
-  function createFirstMonth() {
-    weekDays.forEach((elem, i) => {
-      elem.textContent = ``;
-    });
+  function createMonth() {
 
     if (firstWeekDay === 0) {
       firstWeekDay = 7;
       for (var n = 1; n <= moy[monthCopy]; n++) {
         newArray.push(weekDays[(firstWeekDay - 2) + n]);
+        parentsArray.push(parents[(firstWeekDay - 2) + n]);
       }
     } else {
       for (var i = 1; i <= moy[monthCopy]; i++) {
         newArray.push(weekDays[(firstWeekDay - 2) + i]);
+        parentsArray.push(parents[(firstWeekDay - 2) + i]);
       }
     }
 
@@ -213,8 +203,36 @@ window.addEventListener('DOMContentLoaded', () => {
       } else {
         elem.textContent = `${(firstDay + i)}`;
       }
+
+      if (i === day - 1) {
+        parentsArray[i].classList.add('that-day');
+      }
     });
+
+    console.log(parentsArray);
+
+    for (var v = 0; v < firstWeekDays.length; v++) {
+      if (v === firstWeekDay - 1) {
+
+        firstWeekDays[v].textContent = `${weekdayNames[firstWeekDay - 1]}, ${firstDay}`;
+
+        for (var x = 1; x < (7 - v); x++) {
+          firstWeekDays[v + x].textContent = `${weekdayNames[firstWeekDay + x - 1]}, ${firstDay + x}`;
+        }
+
+        firstWeekDays[v].classList.add('first-day');
+
+      } else if (firstWeekDay === 0) {
+
+        firstWeekDay = 7;
+
+        if (v === firstWeekDay - 1) {
+          firstWeekDays[v].textContent = `${weekdayNames[firstWeekDay - 1]}, ${firstDay}`;
+          firstWeekDays[v].classList.add('first-day');
+        }
+      }
+    }
   }
 
-  createFirstMonth();
+  createMonth();
 });
