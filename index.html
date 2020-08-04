@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Календарь</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="normalize.css">
   </head>
   <body>
     <header class="page-header">
@@ -18,11 +19,19 @@
     <main class="page-main">
       <div class="wrapper">
         <div class="date-navigation">
-          <button type="button" class="small-btn last-month"><</button>
+          <button type="button" class="small-btn last-month">
+            <svg width="10" height="10">
+              <polygon points="3,5 7,8 7,2" fill="#868686"/>
+            </svg>
+          </button>
           <div class="today-month">
             <p class="today-month__date"></p>
           </div>
-          <button type="button" class="small-btn next-month">></button>
+          <button type="button" class="small-btn next-month">
+            <svg width="10" height="10">
+              <polygon points="7,5 3,8 3,2" fill="#868686"/>
+            </svg>
+          </button>
           <button type="button" class="small-btn that-month">Сегодня</button>
         </div>
         <div class="month">

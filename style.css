@@ -37,13 +37,14 @@ body {
 }
 
 .btn {
+  height: 30px;
   margin: 0;
   padding: 5px 10px;
   color: #ffffff;
   font-size: 14px;
   background-color: rgb(0, 103, 209);
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .btn:first-child {
@@ -123,11 +124,28 @@ body {
 
 .small-btn {
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  color: #868686;
   background-color: #ffffff;
   box-shadow: inset 0px 0px 2px 1px rgba(168,166,168,1);
 }
 
 .next-month {
   margin-right: 10px;
+}
+
+.search {
+  position: relative;
+  width: 260px;
+  height: 30px;
+  margin: 0;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: inset 0px 0px 2px 1px rgba(168,166,168,1);
+}
+
+.search::placeholder {
+  color: rgb(209, 209, 209);
 }
