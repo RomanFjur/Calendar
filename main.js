@@ -183,7 +183,6 @@ window.addEventListener('DOMContentLoaded', () => {
   createFirstWeek();
 
   function createMonth() {
-
     if (firstWeekDay === 0) {
       firstWeekDay = 7;
       for (var n = 1; n <= moy[monthCopy]; n++) {
@@ -203,13 +202,7 @@ window.addEventListener('DOMContentLoaded', () => {
       } else {
         elem.textContent = `${(firstDay + i)}`;
       }
-
-      if (i === day - 1) {
-        parentsArray[i].classList.add('that-day');
-      }
     });
-
-    console.log(parentsArray);
 
     for (var v = 0; v < firstWeekDays.length; v++) {
       if (v === firstWeekDay - 1) {
@@ -232,7 +225,29 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+
+    if (month != monthCopy) {
+      resetThatDay();
+    } else {
+      showThatDay();
+    }
+  }
+
+  function resetThatDay(){
+    parentsArray.forEach((elem, i) => {
+      elem.classList.remove('that-day');
+    });
+  }
+
+  function showThatDay() {
+    parentsArray.forEach((elem, i) => {
+      if (i === day - 1) {
+        elem.classList.add('that-day');
+      }
+    });
   }
 
   createMonth();
+
+  showThatDay();
 });
