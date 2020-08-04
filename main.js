@@ -94,11 +94,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     createThatMonth(monthCopy + 1);
 
-    if (element.textContent === `${monthNames[0]} ${year}`) {
-      leftCount = 11;
-      monthCopy = leftCount;
-    }
-
     highYears.forEach((item, i) => {
       if (year === item) {
         moy[1] = 29;
@@ -110,6 +105,10 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   prevMonth.addEventListener('click', () => {
+    if (element.textContent === `${monthNames[0]} ${year}`) {
+      leftCount = 11;
+      monthCopy = leftCount;
+    }
     renderPreviousMonth();
   });
 
@@ -129,11 +128,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     createThatMonth(monthCopy + 1);
 
-    if (element.textContent == `${monthNames[11]} ${year}`) {
-      rightCount = 0;
-      monthCopy = rightCount;
-    }
-
     highYears.forEach((item, i) => {
       if (year === item) {
         moy[1] = 29;
@@ -145,6 +139,10 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   nextMonth.addEventListener('click', () => {
+    if (element.textContent == `${monthNames[11]} ${year}`) {
+      rightCount = 0;
+      monthCopy = rightCount;
+    }
     renderNextMonth();
   });
 
