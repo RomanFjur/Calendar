@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
     'Четверг',
     'Пятница',
     'Суббота',
-    'Воскресение'
+    'Воскресенье'
   ];
 
   let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of each year
@@ -211,6 +211,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
         for (var x = 1; x < (7 - v); x++) {
           firstWeekDays[v + x].textContent = `${weekdayNames[firstWeekDay + x - 1]}, ${firstDay + x}`;
+        }
+
+        for (var y = 1; y <= (7 - (7 - v)); y++) {
+          firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[monthCopy - 1] - (y - 1)}`;
         }
 
         firstWeekDays[v].classList.add('first-day');
