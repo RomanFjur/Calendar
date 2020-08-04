@@ -57,9 +57,16 @@ body {
   padding: 0;
 }
 
+.today-month__date {
+  width: 100px;
+  margin: 0;
+  padding: 0 10px;
+}
+
 .month {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   min-height: 500px;
   border: 1px solid black;
 }
@@ -67,12 +74,17 @@ body {
 .week {
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
+  border: 1px solid black;
 }
 
 .day {
-  min-height: 98px;
+  min-height: 120px;
+  margin: 0;
+  padding: 0;
   flex-grow: 1;
-  height: 10px;
   border: 1px solid black;
+}
+
+.first-day {
+  background-color: orange;
 }
