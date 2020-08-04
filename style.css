@@ -58,9 +58,11 @@ body {
 }
 
 .today-month__date {
-  width: 100px;
+  width: 120px;
   margin: 0;
   padding: 0 10px;
+  font-size: 18px;
+  text-align: center;
 }
 
 .month {
@@ -68,23 +70,64 @@ body {
   flex-direction: column;
   flex-wrap: wrap;
   min-height: 500px;
-  border: 1px solid black;
+  margin: 0;
+  margin-bottom: 40px;
+  padding: 0;
 }
 
 .week {
   display: flex;
   flex-direction: row;
-  border: 1px solid black;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  border: 2px solid rgb(237, 237, 237);
+  border-top: 1px solid rgb(237, 237, 237);
+  border-bottom: none;
+}
+
+.week:first-child {
+  border-top: 2px solid rgb(237, 237, 237);
+}
+
+.week:last-child {
+  border-bottom: 2px solid rgb(237, 237, 237);
 }
 
 .day {
+  min-width: 160px;
   min-height: 120px;
   margin: 0;
   padding: 0;
-  flex-grow: 1;
-  border: 1px solid black;
+  border-left: 1px solid rgb(237, 237, 237);
+  box-sizing: border-box;
+}
+
+.day:first-of-type {
+  border-left: none;
+}
+
+.description {
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+  color: rgb(173, 173, 173);
+  box-sizing: border-box;
 }
 
 .first-day {
-  background-color: orange;
+
+}
+
+.small-btn {
+  border: none;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: inset 0px 0px 2px 1px rgba(168,166,168,1);
+}
+
+.next-month {
+  margin-right: 10px;
 }

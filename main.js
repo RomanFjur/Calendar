@@ -47,7 +47,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const prevMonth = document.querySelector('.last-month'),
         nextMonth = document.querySelector('.next-month');
 
-  let monthCount;
+  let leftCount,
+      rightCount;
 
   let highYears = [];
 
@@ -79,9 +80,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function renderPreviousMonth() {
     moy[1] = 28;
-    if (monthCount === 11) {
+    if (leftCount === 11) {
       renderMonth(year - 1);
-      monthCount--;
+      leftCount--;
       year = year - 1;
     } else {
       monthCopy--;
@@ -91,8 +92,8 @@ window.addEventListener('DOMContentLoaded', () => {
     createThatMonth(monthCopy + 1);
 
     if (element.textContent === `${monthNames[0]} ${year}`) {
-      monthCount = 11;
-      monthCopy = monthCount;
+      leftCount = 11;
+      monthCopy = leftCount;
     }
 
     highYears.forEach((item, i) => {
@@ -112,9 +113,9 @@ window.addEventListener('DOMContentLoaded', () => {
   function renderNextMonth() {
     moy[1] = 28;
 
-    if (monthCount === 0) {
+    if (rightCount === 0) {
       renderMonth(year + 1);
-      monthCount++;
+      rightCount++;
       year = year + 1;
     } else {
       monthCopy++;
@@ -124,8 +125,8 @@ window.addEventListener('DOMContentLoaded', () => {
     createThatMonth(monthCopy + 1);
 
     if (element.textContent == `${monthNames[11]} ${year}`) {
-      monthCount = 0;
-      monthCopy = monthCount;
+      rightCount = 0;
+      monthCopy = rightCount;
     }
 
     highYears.forEach((item, i) => {
