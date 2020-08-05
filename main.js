@@ -35,6 +35,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of each year
   let monthCopy = month;
+  let yearCopy = year;
 
   const element = document.querySelector('.today-month__date'),
         parents = document.querySelectorAll('.day');
@@ -84,18 +85,18 @@ window.addEventListener('DOMContentLoaded', () => {
   function renderPreviousMonth() {
     moy[1] = 28;
     if (leftCount === 11) {
-      renderMonth(year - 1);
+      renderMonth(yearCopy - 1);
       leftCount--;
-      year = year - 1;
+      yearCopy = yearCopy - 1;
     } else {
       monthCopy--;
-      renderMonth(year);
+      renderMonth(yearCopy);
     }
 
     createThatMonth(monthCopy + 1);
 
     highYears.forEach((item, i) => {
-      if (year === item) {
+      if (yearCopy === item) {
         moy[1] = 29;
       }
     });
@@ -105,7 +106,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   prevMonth.addEventListener('click', () => {
-    if (element.textContent === `${monthNames[0]} ${year}`) {
+    if (element.textContent === `${monthNames[0]} ${yearCopy}`) {
       leftCount = 11;
       monthCopy = leftCount;
     }
@@ -118,18 +119,18 @@ window.addEventListener('DOMContentLoaded', () => {
     moy[1] = 28;
 
     if (rightCount === 0) {
-      renderMonth(year + 1);
+      renderMonth(yearCopy + 1);
       rightCount++;
-      year = year + 1;
+      yearCopy = yearCopy + 1;
     } else {
       monthCopy++;
-      renderMonth(year);
+      renderMonth(yearCopy);
     }
 
     createThatMonth(monthCopy + 1);
 
     highYears.forEach((item, i) => {
-      if (year === item) {
+      if (yearCopy === item) {
         moy[1] = 29;
       }
     });
@@ -139,7 +140,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   nextMonth.addEventListener('click', () => {
-    if (element.textContent == `${monthNames[11]} ${year}`) {
+    if (element.textContent == `${monthNames[11]} ${yearCopy}`) {
       rightCount = 0;
       monthCopy = rightCount;
     }
@@ -220,7 +221,11 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         for (var y = 1; y <= (7 - (7 - v)); y++) {
-          firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[monthCopy - 1] - (y - 1)}`;
+          if (monthCopy === 0) {
+            firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[11] - (y - 1)}`;
+          } else {
+            firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[monthCopy - 1] - (y - 1)}`;
+          }
         }
 
         firstWeekDays[v].classList.add('first-day');
@@ -236,11 +241,13 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if (month != monthCopy) {
-      resetThatDay();
+    if (month === monthCopy && year === yearCopy) {
+      showThatDay();  
     } else {
-      showThatDay();
+      resetThatDay();
     }
+
+    console.log(month, monthCopy, year, yearCopy);
   }
 
   function resetThatDay(){
@@ -258,6 +265,5 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   createMonth();
-
   showThatDay();
 });
