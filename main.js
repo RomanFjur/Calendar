@@ -291,6 +291,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ СОБЫТИЙ!!!!! (Далее)
 
+  const modalEvent = document.querySelector('.modal-create-event');
+
   function addChecked(item) {
     item.classList.add('checked');
   }
@@ -305,8 +307,8 @@ window.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => {
       removeChecked(item);
       addChecked(item);
+      modalEvent.classList.remove('hide');
+      modalEvent.classList.add('show');
     });
   });
-
-
 });
