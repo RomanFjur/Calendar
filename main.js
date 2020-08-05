@@ -34,7 +34,7 @@ window.addEventListener('DOMContentLoaded', () => {
   ];
 
   let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of year
-  
+
   let monthCopy = month,
       yearCopy = year;
 
@@ -49,7 +49,8 @@ window.addEventListener('DOMContentLoaded', () => {
         nextMonth = document.querySelector('.next-month');
 
   let leftCount,
-      rightCount;
+      rightCount,
+      emptyCount;
 
   let highYears = [];
 
@@ -174,6 +175,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     weekDays.forEach((elem, i) => {
       elem.textContent = ``;
+      parents[i].classList.remove('empty-day');
+      parents[i].classList.remove('prev-day');
+      emptyCount = 1;
     });
 
     firstWeekDays.forEach((p, i) => {
@@ -219,8 +223,10 @@ window.addEventListener('DOMContentLoaded', () => {
         for (let y = 1; y <= (7 - (7 - v)); y++) {
           if (monthCopy === 0) {
             firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[11] - (y - 1)}`;
+            parents[v - y].classList.add('prev-day');
           } else {
             firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[monthCopy - 1] - (y - 1)}`;
+            parents[v - y].classList.add('prev-day');
           }
         }
 
@@ -246,6 +252,20 @@ window.addEventListener('DOMContentLoaded', () => {
     } else {
       resetThatDay();
     }
+
+    checkForEmpty();
+  }
+
+  function checkForEmpty() {
+    weekDays.forEach((item, i) => {
+      if (item.textContent === '') {
+        parents[i].classList.add('empty-day');
+        for (let e = 0; e < emptyCount; e++) {
+          item.textContent = `${firstDay + e}`;
+        }
+        emptyCount++;
+      }
+    });
   }
 
   function resetThatDay(){
