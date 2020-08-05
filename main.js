@@ -33,9 +33,10 @@ window.addEventListener('DOMContentLoaded', () => {
     'Воскресенье'
   ];
 
-  let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of each year
-  let monthCopy = month;
-  let yearCopy = year;
+  let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of year
+  
+  let monthCopy = month,
+      yearCopy = year;
 
   const element = document.querySelector('.today-month__date'),
         parents = document.querySelectorAll('.day');
@@ -43,8 +44,6 @@ window.addEventListener('DOMContentLoaded', () => {
   function renderMonth(year) {
     element.textContent = `${monthNames[monthCopy]} ${year}`;
   }
-
-  renderMonth(year);
 
   const prevMonth = document.querySelector('.last-month'),
         nextMonth = document.querySelector('.next-month');
@@ -72,13 +71,11 @@ window.addEventListener('DOMContentLoaded', () => {
     let someDate = new Date('1972-01-01'),
         someYear = someDate.getFullYear();
 
-    for (var i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
       highYears.push(someYear);
       someYear = highYears[i] + 4;
     }
   }
-
-  generateHighYears(20);
 
   //Функция переключения месяца назад
 
@@ -159,9 +156,9 @@ window.addEventListener('DOMContentLoaded', () => {
       firstDay,
       firstMonth;
 
-  let newArray = [];
-  let parentsArray = [];
-  let fullDate = '2020-08-01';
+  let newArray = [],
+      parentsArray = [],
+      fullDate = '2020-08-01';
 
   function setFirstDate(fullDate) {
     return firstDate = new Date(fullDate),
@@ -170,8 +167,6 @@ window.addEventListener('DOMContentLoaded', () => {
           firstDay = firstDate.getDate(),
           firstMonth = firstDate.getMonth();
   }
-
-  setFirstDate(fullDate);
 
   function createFirstWeek() {
     newArray = [];
@@ -187,22 +182,23 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  createFirstWeek();
-
   function createMonth() {
+
+    //Построение массивов с числами месяца начиная от первого дня месяца
     if (firstWeekDay === 0) {
       firstWeekDay = 7;
-      for (var n = 1; n <= moy[monthCopy]; n++) {
+      for (let n = 1; n <= moy[monthCopy]; n++) {
         newArray.push(weekDays[(firstWeekDay - 2) + n]);
         parentsArray.push(parents[(firstWeekDay - 2) + n]);
       }
     } else {
-      for (var i = 1; i <= moy[monthCopy]; i++) {
+      for (let i = 1; i <= moy[monthCopy]; i++) {
         newArray.push(weekDays[(firstWeekDay - 2) + i]);
         parentsArray.push(parents[(firstWeekDay - 2) + i]);
       }
     }
 
+    //Нумерация массива чисел месяца
     newArray.forEach((elem, i) => {
       if (i === 0) {
         elem.textContent = `${(firstDay)}`;
@@ -211,16 +207,16 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    for (var v = 0; v < firstWeekDays.length; v++) {
+    for (let v = 0; v < firstWeekDays.length; v++) {
       if (v === firstWeekDay - 1) {
 
-        firstWeekDays[v].textContent = `${weekdayNames[firstWeekDay - 1]}, ${firstDay}`;
-
-        for (var x = 1; x < (7 - v); x++) {
+        //Разметка дней первой недели после первого дня месяца
+        for (let x = 1; x < (7 - v); x++) {
           firstWeekDays[v + x].textContent = `${weekdayNames[firstWeekDay + x - 1]}, ${firstDay + x}`;
         }
 
-        for (var y = 1; y <= (7 - (7 - v)); y++) {
+        //Разметка в календаре дней предыдущего месяца
+        for (let y = 1; y <= (7 - (7 - v)); y++) {
           if (monthCopy === 0) {
             firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[11] - (y - 1)}`;
           } else {
@@ -228,10 +224,13 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         }
 
+        //Разметка первого дня месяца
+        firstWeekDays[v].textContent = `${weekdayNames[firstWeekDay - 1]}, ${firstDay}`;
         firstWeekDays[v].classList.add('first-day');
 
       } else if (firstWeekDay === 0) {
 
+        //Если первый день месяца по счету в массиве равен 0, то он становится равным 7 (далее чтобы стать Воскресеньем)
         firstWeekDay = 7;
 
         if (v === firstWeekDay - 1) {
@@ -241,13 +240,12 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    //Проверка текущей даты для удаления либо установления на календаре текущего дня
     if (month === monthCopy && year === yearCopy) {
-      showThatDay();  
+      showThatDay();
     } else {
       resetThatDay();
     }
-
-    console.log(month, monthCopy, year, yearCopy);
   }
 
   function resetThatDay(){
@@ -264,6 +262,10 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  renderMonth(year);
+  generateHighYears(20);
+  setFirstDate(fullDate);
+  createFirstWeek();
   createMonth();
   showThatDay();
 });
