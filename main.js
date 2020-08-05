@@ -291,6 +291,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ СОБЫТИЙ!!!!! (Далее)
 
-  
+  function addChecked(item) {
+    item.classList.add('checked');
+  }
+
+  function removeChecked(item) {
+    parentsArray.forEach((item, i) => {
+      item.classList.remove('checked');
+    });
+  }
+
+  parentsArray.forEach((item, i) => {
+    item.addEventListener('click', () => {
+      removeChecked(item);
+      addChecked(item);
+    });
+  });
+
 
 });
