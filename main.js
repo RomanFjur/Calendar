@@ -148,8 +148,8 @@ window.addEventListener('DOMContentLoaded', () => {
   //Далее функции создания первой недели в месяце, текущего месяца и последующих месяцев
 
   let firstWeek = document.querySelector('.first-week'),
-      firstWeekDays = firstWeek.querySelectorAll('.description'),
-      weekDays = document.querySelectorAll('.description');
+      firstWeekDays = firstWeek.querySelectorAll('.day-number'),
+      weekDays = document.querySelectorAll('.day-number');
 
   let firstDate,
       firstYear,
@@ -288,4 +288,9 @@ window.addEventListener('DOMContentLoaded', () => {
   createFirstWeek();
   createMonth();
   showThatDay();
+
+  //ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ СОБЫТИЙ!!!!! (Далее)
+
+  
+
 });
