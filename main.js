@@ -133,6 +133,11 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   function createMonth() {
+    parents.forEach((item, i) => {
+      item.classList.remove('full-day');
+      item.id = ``;
+    });
+
     firstDaysArray = [];
     //Построение массивов с числами месяца начиная от первого дня месяца
     if (firstWeekDay === 0) {
@@ -149,7 +154,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     firstDaysArray.forEach((item, i) => {
-      item.classList.add('month-day');
+      item.classList.add('full-day');
+      item.id = `${i}`;
     });
 
     checkDay();
@@ -233,6 +239,11 @@ window.addEventListener('DOMContentLoaded', () => {
         elem.classList.add('that-day');
       }
     });
+  }
+
+  function renderThatMonth() {
+    renderMonth(year);
+    createThatMonth(month);
   }
 
   //Функция переключения месяца назад
@@ -339,40 +350,51 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     firstDaysArray.forEach((item, i) => {
-      item.addEventListener('click', () => {
-        modalEvent.classList.remove('show');
-        modalEvent.classList.add('hide');
-        removeChecked(item);
-        addChecked(item);
-        console.log('hello');
+      if (item.id != ``) {
+        item.addEventListener('click', () => {
+          modalEvent.classList.remove('show');
+          modalEvent.classList.add('hide');
+          removeChecked(item);
+          addChecked(item);
+          console.log('hello');
 
-        if (item.offsetLeft > 700) {
-          modalEvent.style.left = `${item.offsetLeft - 345}px`;
-          modalEvent.style.top = `${item.offsetTop - 20}px`;
-          modalClose.style.right = `285px`;
-          modalCloudRight.classList.remove('hide');
-          modalCloudLeft.classList.add('hide');
-        } else {
-          modalEvent.style.left = `${item.offsetLeft + 177}px`;
-          modalEvent.style.top = `${item.offsetTop - 20}px`;
-          modalClose.style.right = `-17px`;
-          modalCloudRight.classList.add('hide');
-          modalCloudLeft.classList.remove('hide');
-        }
+          if (item.offsetLeft > 700) {
+            modalEvent.style.left = `${item.offsetLeft - 345}px`;
+            modalEvent.style.top = `${item.offsetTop - 20}px`;
+            modalClose.style.right = `285px`;
+            modalCloudRight.classList.remove('hide');
+            modalCloudLeft.classList.add('hide');
+          } else {
+            modalEvent.style.left = `${item.offsetLeft + 177}px`;
+            modalEvent.style.top = `${item.offsetTop - 20}px`;
+            modalClose.style.right = `-17px`;
+            modalCloudRight.classList.add('hide');
+            modalCloudLeft.classList.remove('hide');
+          }
 
-        if (item.offsetTop > 800) {
-          modalEvent.style.top = `${item.offsetTop - 181}px`;
-          modalCloudLeft.style.top = `+161px`;
-        } else {
-          modalCloudLeft.style.top = `0px`;
-        }
+          if (item.offsetTop > 800) {
+            modalEvent.style.top = `${item.offsetTop - 181}px`;
+            modalCloudLeft.style.top = `+161px`;
+          } else {
+            modalCloudLeft.style.top = `0px`;
+          }
 
-        openModal();
-      });
+          openModal();
+        });
+      }
     });
 
     modalClose.addEventListener('click', () => {
       closeModal();
     });
   }
+
+  const toThatMonth = document.querySelector('.that-month');
+
+  toThatMonth.addEventListener('click', () => {
+    createThatDays(firstDaysArray);
+  });
+
+  //localStorage
+
 });

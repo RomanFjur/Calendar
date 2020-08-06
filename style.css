@@ -163,6 +163,7 @@ body {
   vertical-align: center;
   background-color: #ffffff;
   box-shadow: inset 0px 0px 2px 1px rgba(168,166,168,1);
+  cursor: pointer;
 }
 
 .next-month {
@@ -384,4 +385,12 @@ span {
 
 .hide {
   display: none;
+}
+
+.full-day {
+  background-color: pink;
+}
+
+.that-month {
+  cursor: pointer;
 }
