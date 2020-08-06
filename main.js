@@ -2,6 +2,11 @@
 
 window.addEventListener('DOMContentLoaded', () => {
 
+  const modalEvent = document.querySelector('.modal'),
+        modalClose = document.querySelector('.modal-close'),
+        modalCloudLeft = document.querySelector('.modal-cloud-left'),
+        modalCloudRight = document.querySelector('.modal-cloud-right');
+
   let date = new Date(),
       year = date.getFullYear(),
       month = date.getMonth(),
@@ -33,13 +38,31 @@ window.addEventListener('DOMContentLoaded', () => {
     'Воскресенье'
   ];
 
+  //Далее функции создания первой недели в месяце, текущего месяца и последующих месяцев
+
+  let firstWeek = document.querySelector('.first-week'),
+      firstWeekDays = firstWeek.querySelectorAll('.day-number'),
+      weekDays = document.querySelectorAll('.day-number');
+
+  let firstDate,
+      firstYear,
+      firstWeekDay,
+      firstDay,
+      firstMonth;
+
+  let newArray = [],
+      daysArray = [],
+      fullDate = '2020-08-01';
+
   let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of year
 
   let monthCopy = month,
       yearCopy = year;
 
   const element = document.querySelector('.today-month__date'),
-        parents = document.querySelectorAll('.day');
+        psevdoParents = document.querySelectorAll('.day');
+
+  let parents = Array.from(psevdoParents);
 
   function renderMonth(year) {
     element.textContent = `${monthNames[monthCopy]} ${year}`;
@@ -78,89 +101,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  //Функция переключения месяца назад
-
-  function renderPreviousMonth() {
-    moy[1] = 28;
-    if (leftCount === 11) {
-      renderMonth(yearCopy - 1);
-      leftCount--;
-      yearCopy = yearCopy - 1;
-    } else {
-      monthCopy--;
-      renderMonth(yearCopy);
-    }
-
-    createThatMonth(monthCopy + 1);
-
-    highYears.forEach((item, i) => {
-      if (yearCopy === item) {
-        moy[1] = 29;
-      }
-    });
-
-    createFirstWeek();
-    createMonth();
-  }
-
-  prevMonth.addEventListener('click', () => {
-    if (element.textContent === `${monthNames[0]} ${yearCopy}`) {
-      leftCount = 11;
-      monthCopy = leftCount;
-    }
-    renderPreviousMonth();
-  });
-
-  //Функция переключения месяца вперед
-
-  function renderNextMonth() {
-    moy[1] = 28;
-
-    if (rightCount === 0) {
-      renderMonth(yearCopy + 1);
-      rightCount++;
-      yearCopy = yearCopy + 1;
-    } else {
-      monthCopy++;
-      renderMonth(yearCopy);
-    }
-
-    createThatMonth(monthCopy + 1);
-
-    highYears.forEach((item, i) => {
-      if (yearCopy === item) {
-        moy[1] = 29;
-      }
-    });
-
-    createFirstWeek();
-    createMonth();
-  }
-
-  nextMonth.addEventListener('click', () => {
-    if (element.textContent == `${monthNames[11]} ${yearCopy}`) {
-      rightCount = 0;
-      monthCopy = rightCount;
-    }
-    renderNextMonth();
-  });
-
-  //Далее функции создания первой недели в месяце, текущего месяца и последующих месяцев
-
-  let firstWeek = document.querySelector('.first-week'),
-      firstWeekDays = firstWeek.querySelectorAll('.day-number'),
-      weekDays = document.querySelectorAll('.day-number');
-
-  let firstDate,
-      firstYear,
-      firstWeekDay,
-      firstDay,
-      firstMonth;
-
-  let newArray = [],
-      parentsArray = [],
-      fullDate = '2020-08-01';
-
   function setFirstDate(fullDate) {
     return firstDate = new Date(fullDate),
           firstYear = firstDate.getFullYear(),
@@ -171,7 +111,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function createFirstWeek() {
     newArray = [];
-    parentsArray = [];
 
     weekDays.forEach((elem, i) => {
       elem.textContent = ``;
@@ -186,21 +125,34 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function createMonth() {
+  let firstDaysArray = [];
 
+  function createThatDays (arr) {
+    createMonth();
+    arr = [];
+  }
+
+  function createMonth() {
+    firstDaysArray = [];
     //Построение массивов с числами месяца начиная от первого дня месяца
     if (firstWeekDay === 0) {
       firstWeekDay = 7;
       for (let n = 1; n <= moy[monthCopy]; n++) {
         newArray.push(weekDays[(firstWeekDay - 2) + n]);
-        parentsArray.push(parents[(firstWeekDay - 2) + n]);
+        firstDaysArray.push(parents[(firstWeekDay - 2) + n]);
       }
     } else {
       for (let i = 1; i <= moy[monthCopy]; i++) {
         newArray.push(weekDays[(firstWeekDay - 2) + i]);
-        parentsArray.push(parents[(firstWeekDay - 2) + i]);
+        firstDaysArray.push(parents[(firstWeekDay - 2) + i]);
       }
     }
+
+    firstDaysArray.forEach((item, i) => {
+      item.classList.add('month-day');
+    });
+
+    checkDay();
 
     //Нумерация массива чисел месяца
     newArray.forEach((elem, i) => {
@@ -256,6 +208,7 @@ window.addEventListener('DOMContentLoaded', () => {
     checkForEmpty();
   }
 
+  //Функция проверки пустого контента
   function checkForEmpty() {
     weekDays.forEach((item, i) => {
       if (item.textContent === '') {
@@ -269,46 +222,157 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetThatDay(){
-    parentsArray.forEach((elem, i) => {
+    firstDaysArray.forEach((elem, i) => {
       elem.classList.remove('that-day');
     });
   }
 
   function showThatDay() {
-    parentsArray.forEach((elem, i) => {
+    firstDaysArray.forEach((elem, i) => {
       if (i === day - 1) {
         elem.classList.add('that-day');
       }
     });
   }
 
+  //Функция переключения месяца назад
+
+  function renderPreviousMonth() {
+    moy[1] = 28;
+    if (leftCount === 11) {
+      renderMonth(yearCopy - 1);
+      leftCount--;
+      yearCopy = yearCopy - 1;
+    } else {
+      monthCopy--;
+      renderMonth(yearCopy);
+    }
+
+    createThatMonth(monthCopy + 1);
+
+    highYears.forEach((item, i) => {
+      if (yearCopy === item) {
+        moy[1] = 29;
+      }
+    });
+
+    createFirstWeek();
+    createMonth(firstDaysArray);
+  }
+
+  prevMonth.addEventListener('click', () => {
+
+    if (element.textContent === `${monthNames[0]} ${yearCopy}`) {
+      leftCount = 11;
+      monthCopy = leftCount;
+    }
+    renderPreviousMonth();
+    checkDay();
+  });
+
+  //Функция переключения месяца вперед
+
+  function renderNextMonth() {
+    moy[1] = 28;
+
+    if (rightCount === 0) {
+      renderMonth(yearCopy + 1);
+      rightCount++;
+      yearCopy = yearCopy + 1;
+    } else {
+      monthCopy++;
+      renderMonth(yearCopy);
+    }
+
+    createThatMonth(monthCopy + 1);
+
+    highYears.forEach((item, i) => {
+      if (yearCopy === item) {
+        moy[1] = 29;
+      }
+    });
+
+    createFirstWeek();
+    createMonth(firstDaysArray);
+  }
+
+  nextMonth.addEventListener('click', () => {
+    if (element.textContent == `${monthNames[11]} ${yearCopy}`) {
+      rightCount = 0;
+      monthCopy = rightCount;
+    }
+    renderNextMonth();
+  });
+
   renderMonth(year);
   generateHighYears(20);
   setFirstDate(fullDate);
   createFirstWeek();
-  createMonth();
+  createThatDays(firstDaysArray);
   showThatDay();
 
   //ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ СОБЫТИЙ!!!!! (Далее)
 
-  const modalEvent = document.querySelector('.modal-create-event');
+  function checkDay () {
 
-  function addChecked(item) {
-    item.classList.add('checked');
-  }
+    function addChecked(item) {
+      item.classList.add('checked');
+    }
 
-  function removeChecked(item) {
-    parentsArray.forEach((item, i) => {
-      item.classList.remove('checked');
-    });
-  }
+    function removeChecked(item) {
+      firstDaysArray.forEach((item, i) => {
+        item.classList.remove('checked');
+      });
+      parents.forEach((item, i) => {
+        item.classList.remove('checked');
+      });
+    }
 
-  parentsArray.forEach((item, i) => {
-    item.addEventListener('click', () => {
-      removeChecked(item);
-      addChecked(item);
+    function closeModal() {
+      modalEvent.classList.remove('show');
+      modalEvent.classList.add('hide');
+    }
+
+    function openModal() {
       modalEvent.classList.remove('hide');
       modalEvent.classList.add('show');
+    }
+
+    firstDaysArray.forEach((item, i) => {
+      item.addEventListener('click', () => {
+        modalEvent.classList.remove('show');
+        modalEvent.classList.add('hide');
+        removeChecked(item);
+        addChecked(item);
+        console.log('hello');
+
+        if (item.offsetLeft > 700) {
+          modalEvent.style.left = `${item.offsetLeft - 345}px`;
+          modalEvent.style.top = `${item.offsetTop - 20}px`;
+          modalClose.style.right = `285px`;
+          modalCloudRight.classList.remove('hide');
+          modalCloudLeft.classList.add('hide');
+        } else {
+          modalEvent.style.left = `${item.offsetLeft + 177}px`;
+          modalEvent.style.top = `${item.offsetTop - 20}px`;
+          modalClose.style.right = `-17px`;
+          modalCloudRight.classList.add('hide');
+          modalCloudLeft.classList.remove('hide');
+        }
+
+        if (item.offsetTop > 800) {
+          modalEvent.style.top = `${item.offsetTop - 181}px`;
+          modalCloudLeft.style.top = `+161px`;
+        } else {
+          modalCloudLeft.style.top = `0px`;
+        }
+
+        openModal();
+      });
     });
-  });
+
+    modalClose.addEventListener('click', () => {
+      closeModal();
+    });
+  }
 });
