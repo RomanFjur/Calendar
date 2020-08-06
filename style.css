@@ -15,6 +15,7 @@ body {
   margin-bottom: 20px;
   padding: 0;
   padding-top: 60px;
+  padding-bottom: 20px;
   background-color: rgb(241, 241, 241);
   box-shadow: 0px -2px 5px 4px rgba(168,166,168,1);
   box-sizing: border-box;
@@ -33,6 +34,7 @@ body {
 }
 
 .buttons {
+  position: relative;
   min-width: 200px;
   margin: 0;
   margin-bottom: 20px;
@@ -44,13 +46,17 @@ body {
   margin: 0;
   padding: 5px 10px;
   color: #ffffff;
-  text-shadow: 0px 1px 2px #00468e;
+  text-shadow: 0px 1px 1px #00468e;
   font-family: 'Helvetica';
   font-size: 14px;
   background-color: rgb(0, 103, 209);
   border: none;
   border-radius: 3px;
   box-shadow: 0px 1.5px 2px 0px #b4babe;
+}
+
+.btn:hover {
+  cursor: pointer;
 }
 
 .btn:first-child {
@@ -106,10 +112,11 @@ body {
 }
 
 .day {
-  min-width: 160px;
-  min-height: 160px;
+  min-width: 140px;
+  min-height: 140px;
   margin: 0;
   padding: 0;
+  font-size: 12px;
   border-left: 1px solid rgb(237, 237, 237);
   box-sizing: border-box;
 }
@@ -129,7 +136,8 @@ body {
   box-shadow: none;
 }
 
-.day-number {
+.day-number,
+.event {
   display: block;
   margin: 0;
   padding: 0;
@@ -139,8 +147,9 @@ body {
   box-sizing: border-box;
 }
 
-.first-day {
-
+.event {
+  padding-top: 5px;
+  font-weight: bold;
 }
 
 .that-day {
@@ -219,88 +228,96 @@ span {
   box-shadow: 0 1px 4px 2px rgba(168,166,168,1);
 }
 
+.modal-add-note {
+  top: -22px;
+  left: 51px;
+  width: 280px;
+  height: 80px;
+}
+
 .modal-form {
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
-.modal-cloud-left {
+.cloud {
   position: absolute;
   display: block;
-  top: 0;
-  left: 0;
   width: 15px;
   height: 15px;
   margin: 0;
   padding: 0;
   border: none;
   background-color: none;
+}
+
+.cloud::before {
+  position: absolute;
+  display: block;
+  content: '';
+  width: 15px;
+  height: 15px;
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 1px 4px 2px rgba(168,166,168,1);
+  transform: rotate(45deg);
+}
+
+.cloud::after {
+  position: absolute;
+  display: block;
+  content: '';
+  width: 20px;
+  height: 50px;
+  background-color: #ffffff;
+  border: none;
+}
+
+.modal-cloud-left {
+  top: 0;
+  left: 0;
 }
 
 .modal-cloud-left::before {
-  position: absolute;
-  display: block;
-  content: '';
   top: 3px;
   left: -32px;
-  width: 15px;
-  height: 15px;
-  background-color: #ffffff;
-  border: none;
-  box-shadow: 0 1px 4px 2px rgba(168,166,168,1);
-  transform: rotate(45deg);
 }
 
 .modal-cloud-left::after {
-  position: absolute;
-  display: block;
-  content: '';
   top: -20px;
   left: -25px;
-  width: 20px;
-  height: 50px;
-  background-color: #ffffff;
-  border: none;
 }
 
 .modal-cloud-right {
-  position: absolute;
-  display: block;
   top: 0;
   left: 329px;
-  width: 15px;
-  height: 15px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background-color: none;
 }
 
 .modal-cloud-right::before {
-  position: absolute;
-  display: block;
-  content: '';
   top: 3px;
   left: -32px;
-  width: 15px;
-  height: 15px;
-  background-color: #ffffff;
-  border: none;
-  box-shadow: 0 1px 4px 2px rgba(168,166,168,1);
-  transform: rotate(45deg);
 }
 
 .modal-cloud-right::after {
-  position: absolute;
-  display: block;
-  content: '';
   top: -20px;
   left: -44px;
-  width: 20px;
-  height: 50px;
-  background-color: #ffffff;
-  border: none;
+}
+
+.modal-cloud-top {
+  top: 0;
+  left: 30px;
+}
+
+.modal-cloud-top::before {
+  top: -7px;
+  left: 0;
+}
+
+.modal-cloud-top::after {
+  top: -15px;
+  left: 0;
+  transform: rotate(90deg);
 }
 
 .input-wrapper {
@@ -312,8 +329,6 @@ span {
 .modal-close {
   position: absolute;
   display: block;
-  top: -14px;
-  right: -16px;
   width: 10px;
   height: 10px;
   margin: 0;
@@ -346,6 +361,16 @@ span {
   height: 1px;
   background-color: #707070;
   transform: rotate(-45deg);
+}
+
+.close-event {
+  top: -14px;
+  right: -16px;
+}
+
+.close-add {
+  top: 8px;
+  right: 8px;
 }
 
 .input-event {
@@ -387,10 +412,17 @@ span {
   display: none;
 }
 
-.full-day {
-  
-}
-
 .that-month {
   cursor: pointer;
+}
+
+.to-add__pushed {
+  color: #9cb1d1;
+  text-shadow: 0px 1px 1px #00458c;
+  background-color: #0055ac;
+  box-shadow: inset 0px 1px 2px 1px #00337a;
+}
+
+.btn-add {
+  margin-top: 10px;
 }

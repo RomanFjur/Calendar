@@ -9,8 +9,8 @@
     <header class="page-header">
       <div class="page-header__wrapper wrapper">
         <div class="buttons">
-          <button type="button" class="btn">Добавить</button>
-          <button type="button" class="btn">Обновить</button>
+          <button type="button" class="btn to-add">Добавить</button>
+          <button type="button" class="btn to-update">Обновить</button>
         </div>
         <div class="page-header__search">
           <span>
@@ -268,19 +268,27 @@
       </div>
       <div class="modal-create-event modal hide">
         <form class="modal-form" action="index.html" method="post">
-          <span class="modal-cloud-left"></span>
-          <span class="modal-cloud-right hide"></span>
-          <button class="modal-close" type="button"></button>
+          <span class="modal-cloud-left cloud"></span>
+          <span class="modal-cloud-right cloud hide"></span>
+          <button class="modal-close close-event" type="button"></button>
           <div class="input-wrapper">
-            <input type="text" name="" value="" class="input-event" placeholder="Событие">
-            <input type="text" name="" value="" class="input-event" placeholder="День, месяц, год">
-            <input type="text" name="" value="" class="input-event" placeholder="Имена участников">
+            <input type="text" name="event" id="event" class="input-event" placeholder="Событие">
+            <input type="text" name="date" id="date" class="input-event" placeholder="День, месяц, год">
+            <input type="text" name="names" id="names" class="input-event" placeholder="Имена участников">
           </div>
           <textarea name="name" rows="8" cols="80" class="input-event" placeholder="Описание"></textarea>
           <div class="form-buttons">
-            <button type="button" name="button" class="btn-out">Готово</button>
+            <button type="button" name="button" class="btn-out btn-event">Готово</button>
             <button type="button" name="button" class="btn-out">Удалить</button>
           </div>
+        </form>
+      </div>
+      <div class="modal-add-note modal hide">
+        <span class="modal-cloud-top cloud"></span>
+        <button class="modal-close close-add" type="button"></button>
+        <form class="add-form" action="index.html" method="post" class="modal-form">
+          <input type="text" name="add-event" class="input-event add-event" placeholder="5 августа, 20:00, День рождение">
+          <button type="button" name="button" class="btn-out btn-add">Создать</button>
         </form>
       </div>
     </main>

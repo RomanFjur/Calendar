@@ -3,7 +3,7 @@
 window.addEventListener('DOMContentLoaded', () => {
 
   const modalEvent = document.querySelector('.modal'),
-        modalClose = document.querySelector('.modal-close'),
+        modalClose = document.querySelector('.close-event'),
         modalCloudLeft = document.querySelector('.modal-cloud-left'),
         modalCloudRight = document.querySelector('.modal-cloud-right');
 
@@ -63,6 +63,20 @@ window.addEventListener('DOMContentLoaded', () => {
         psevdoParents = document.querySelectorAll('.day');
 
   let parents = Array.from(psevdoParents);
+
+  const writeEvent = document.querySelector('#event'),
+        writeDate = document.querySelector('#date'),
+        writeNames = document.querySelector('#names'),
+        addEvent = document.querySelector('.add-event'),
+        btnEvent = document.querySelector('.btn-event'),
+        btnAdd = document.querySelector('.btn-add');
+
+  let text,
+      eventOfDay = document.querySelectorAll('.event');
+
+  function getValue(element) {
+    text = element.value;
+  }
 
   function renderMonth(year) {
     element.textContent = `${monthNames[monthCopy]} ${year}`;
@@ -155,7 +169,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     firstDaysArray.forEach((item, i) => {
       item.classList.add('full-day');
-      item.id = `${i}`;
+      item.id = `${i + 1}-${monthCopy + 1}-${yearCopy}`;
+      console.log(item.id);
     });
 
     checkDay();
@@ -256,6 +271,10 @@ window.addEventListener('DOMContentLoaded', () => {
     createFirstWeek();
     createMonth(firstDaysArray);
     showThatDay();
+    closeModal();
+    parents.forEach((item, i) => {
+      item.classList.remove('checked');
+    });
   }
 
   //Функция переключения месяца назад
@@ -291,6 +310,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     renderPreviousMonth();
     checkDay();
+    closeModal();
+    parents.forEach((item, i) => {
+      item.classList.remove('checked');
+    });
   });
 
   //Функция переключения месяца вперед
@@ -325,6 +348,10 @@ window.addEventListener('DOMContentLoaded', () => {
       monthCopy = rightCount;
     }
     renderNextMonth();
+    closeModal();
+    parents.forEach((item, i) => {
+      item.classList.remove('checked');
+    });
   });
 
   renderMonth(year);
@@ -335,6 +362,12 @@ window.addEventListener('DOMContentLoaded', () => {
   showThatDay();
 
   //ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ СОБЫТИЙ!!!!! (Далее)
+  function closeModal() {
+    modalEvent.classList.remove('show');
+    modalEvent.classList.add('hide');
+  }
+
+  //localStorage
 
   function checkDay () {
 
@@ -351,11 +384,6 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    function closeModal() {
-      modalEvent.classList.remove('show');
-      modalEvent.classList.add('hide');
-    }
-
     function openModal() {
       modalEvent.classList.remove('hide');
       modalEvent.classList.add('show');
@@ -363,7 +391,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     firstDaysArray.forEach((item, i) => {
       item.addEventListener('click', () => {
-        if (!item.classList.contains('full-day')) {
+        if (item.classList.contains('empty-day') || item.classList.contains('prev-day')) {
           return;
         }
 
@@ -372,28 +400,41 @@ window.addEventListener('DOMContentLoaded', () => {
         removeChecked(item);
         addChecked(item);
 
-        if (item.offsetLeft > 700) {
+        if (item.offsetLeft > 600) {
           modalEvent.style.left = `${item.offsetLeft - 345}px`;
           modalEvent.style.top = `${item.offsetTop - 20}px`;
           modalClose.style.right = `285px`;
           modalCloudRight.classList.remove('hide');
           modalCloudLeft.classList.add('hide');
         } else {
-          modalEvent.style.left = `${item.offsetLeft + 177}px`;
+          modalEvent.style.left = `${item.offsetLeft + 156}px`;
           modalEvent.style.top = `${item.offsetTop - 20}px`;
           modalClose.style.right = `-17px`;
           modalCloudRight.classList.add('hide');
           modalCloudLeft.classList.remove('hide');
         }
 
-        if (item.offsetTop > 800) {
+        if (item.offsetTop > 700) {
           modalEvent.style.top = `${item.offsetTop - 181}px`;
           modalCloudLeft.style.top = `+161px`;
+        } else if (item.offsetTop > 700 && item.offsetLeft > 600) {
+          modalEvent.style.top = `${item.offsetTop - 181}px`;
+          modalCloudRight.classList.remove('hide');
+          modalCloudLeft.classList.add('hide');
+          modalCloudRight.style.top = `+161px`;
         } else {
           modalCloudLeft.style.top = `0px`;
         }
 
         openModal();
+        console.log(item.id);
+
+        btnEvent.addEventListener('click', () => {
+          getValue(writeEvent);
+          localStorage.setItem(`${item.id}`, text);
+          eventOfDay[i + 5].textContent = localStorage.getItem(`${item.id}`);
+          closeModal();
+        });
       });
     });
 
@@ -408,6 +449,18 @@ window.addEventListener('DOMContentLoaded', () => {
     renderThatMonth();
   });
 
-  //localStorage
+  const addButton = document.querySelector('.to-add'),
+        addNote = document.querySelector('.modal-add-note'),
+        addClose = document.querySelector('.close-add');
+
+  addButton.addEventListener('click', () => {
+    addButton.classList.toggle('to-add__pushed');
+    addNote.classList.toggle('hide');
+  });
+
+  addClose.addEventListener('click', () => {
+    addButton.classList.toggle('to-add__pushed');
+    addNote.classList.toggle('hide');
+  });
 
 });
