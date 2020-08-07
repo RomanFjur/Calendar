@@ -63,12 +63,12 @@ window.addEventListener('DOMContentLoaded', () => {
         weekDays = document.querySelectorAll('.day-number'),
         days = document.querySelectorAll('.day');
 
-  //Создание переменных для дальнейшего установления и просчета календаря по датам (для Функции SetFirstDate);
-  let firstDate,
-      firstYear,
-      firstWeekDay,
-      firstDay,
-      firstMonth,
+  //Создание переменных для дальнейшего установления и просчета календаря по датам (для Функции SetThatDate);
+  let thatDate,
+      thatYear,
+      thatWeekDay,
+      thatDay,
+      thatMonth,
       fullDate = '2020-08-01';
 
   //Массивы для дальнейшего построения календаря;
@@ -97,14 +97,26 @@ window.addEventListener('DOMContentLoaded', () => {
   //Массив для подсчёта високосных годов;
   let everyFourYears = [];
 
+  //Функция получения вводимого значения из инпута;
   function getValue(element) {
     text = element.value;
   }
 
+  //Функция генерации отображения переключаемой даты
   function renderMonth(year) {
     thatDateName.textContent = `${monthNames[monthCopy]} ${year}`;
   }
 
+  //Установка текущей даты;
+  function setThatDate(fullDate) {
+    return thatDate = new Date(fullDate),
+          thatYear = thatDate.getFullYear(),
+          thatWeekDay = thatDate.getDay(),
+          thatDay = thatDate.getDate(),
+          thatMonth = thatDate.getMonth();
+  }
+
+  //Генерация текущего месяца;
   function createThatMonth(a) {
     fullDate = fullDate.split('-');
 
@@ -116,10 +128,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     fullDate = fullDate.join('-');
 
-    setFirstDate(fullDate);
+    setThatDate(fullDate);
   }
 
-  function generateHighYears(count) {
+  //Функция генерации количества високосных годов, которые нужно учитывать в календаре от 1972 года
+  function generateEveryFourYears(count) {
     let someDate = new Date('1972-01-01'),
         someYear = someDate.getFullYear();
 
@@ -129,15 +142,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function setFirstDate(fullDate) {
-    return firstDate = new Date(fullDate),
-          firstYear = firstDate.getFullYear(),
-          firstWeekDay = firstDate.getDay(),
-          firstDay = firstDate.getDate(),
-          firstMonth = firstDate.getMonth();
-  }
-
   function createFirstWeek() {
+
     daysNumberArray = [];
 
     weekDays.forEach((elem, i) => {
@@ -165,16 +171,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
     monthInDaysArray = [];
     //Построение массивов с числами месяца начиная от первого дня месяца
-    if (firstWeekDay === 0) {
-      firstWeekDay = 7;
+    if (thatWeekDay === 0) {
+      thatWeekDay = 7;
       for (let n = 1; n <= monthsOfYear[monthCopy]; n++) {
-        daysNumberArray.push(weekDays[(firstWeekDay - 2) + n]);
-        monthInDaysArray.push(days[(firstWeekDay - 2) + n]);
+        daysNumberArray.push(weekDays[(thatWeekDay - 2) + n]);
+        monthInDaysArray.push(days[(thatWeekDay - 2) + n]);
       }
     } else {
       for (let i = 1; i <= monthsOfYear[monthCopy]; i++) {
-        daysNumberArray.push(weekDays[(firstWeekDay - 2) + i]);
-        monthInDaysArray.push(days[(firstWeekDay - 2) + i]);
+        daysNumberArray.push(weekDays[(thatWeekDay - 2) + i]);
+        monthInDaysArray.push(days[(thatWeekDay - 2) + i]);
       }
     }
 
@@ -189,42 +195,42 @@ window.addEventListener('DOMContentLoaded', () => {
     //Нумерация массива чисел месяца
     daysNumberArray.forEach((elem, i) => {
       if (i === 0) {
-        elem.textContent = `${(firstDay)}`;
+        elem.textContent = `${(thatDay)}`;
       } else {
-        elem.textContent = `${(firstDay + i)}`;
+        elem.textContent = `${(thatDay + i)}`;
       }
     });
 
     for (let v = 0; v < firstWeekDays.length; v++) {
-      if (v === firstWeekDay - 1) {
+      if (v === thatWeekDay - 1) {
 
         //Разметка дней первой недели после первого дня месяца
         for (let x = 1; x < (7 - v); x++) {
-          firstWeekDays[v + x].textContent = `${weekdayNames[firstWeekDay + x - 1]}, ${firstDay + x}`;
+          firstWeekDays[v + x].textContent = `${weekdayNames[thatWeekDay + x - 1]}, ${thatDay + x}`;
         }
 
         //Разметка в календаре дней предыдущего месяца
         for (let y = 1; y <= (7 - (7 - v)); y++) {
           if (monthCopy === 0) {
-            firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${monthsOfYear[11] - (y - 1)}`;
+            firstWeekDays[v - y].textContent = `${weekdayNames[thatWeekDay - y - 1]}, ${monthsOfYear[11] - (y - 1)}`;
             days[v - y].classList.add('prev-day');
           } else {
-            firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${monthsOfYear[monthCopy - 1] - (y - 1)}`;
+            firstWeekDays[v - y].textContent = `${weekdayNames[thatWeekDay - y - 1]}, ${monthsOfYear[monthCopy - 1] - (y - 1)}`;
             days[v - y].classList.add('prev-day');
           }
         }
 
         //Разметка первого дня месяца
-        firstWeekDays[v].textContent = `${weekdayNames[firstWeekDay - 1]}, ${firstDay}`;
+        firstWeekDays[v].textContent = `${weekdayNames[thatWeekDay - 1]}, ${thatDay}`;
         firstWeekDays[v].classList.add('first-day');
 
-      } else if (firstWeekDay === 0) {
+      } else if (thatWeekDay === 0) {
 
         //Если первый день месяца по счету в массиве равен 0, то он становится равным 7 (далее чтобы стать Воскресеньем)
-        firstWeekDay = 7;
+        thatWeekDay = 7;
 
-        if (v === firstWeekDay - 1) {
-          firstWeekDays[v].textContent = `${weekdayNames[firstWeekDay - 1]}, ${firstDay}`;
+        if (v === thatWeekDay - 1) {
+          firstWeekDays[v].textContent = `${weekdayNames[thatWeekDay - 1]}, ${thatDay}`;
           firstWeekDays[v].classList.add('first-day');
         }
       }
@@ -248,7 +254,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (item.lastChild === null) {
         days[i].classList.add('empty-day');
         for (let e = 0; e < emptyCount; e++) {
-          item.textContent = `${firstDay + e}`;
+          item.textContent = `${thatDay + e}`;
         }
         emptyCount++;
       } else if(!days[i].classList.contains('prev-day')) {
@@ -364,8 +370,8 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   renderMonth(year);
-  generateHighYears(20);
-  setFirstDate(fullDate);
+  generateEveryFourYears(20);
+  createThatMonth(monthCopy + 1);
   createFirstWeek();
   createThatDays();
   showThatDay();
