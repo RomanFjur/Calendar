@@ -393,7 +393,7 @@ window.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        if (`${item.id}` != `${i}-${monthCopy}-${yearCopy}`) {
+        if (`${item.id}` != `${i + 1}-${monthCopy + 1}-${yearCopy}`) {
           console.log(`${item.id}`, `${i + 1}-${monthCopy + 1}-${yearCopy}`);
           return;
         }
