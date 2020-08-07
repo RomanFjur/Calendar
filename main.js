@@ -5,10 +5,12 @@ window.addEventListener('DOMContentLoaded', () => {
   //Создание переменных с псевдоелементами модального окна и самого модального окна;
   const modalAddEvent = document.querySelector('.modal-create-event'),
         modalAddNote = document.querySelector('.modal-add-note'),
+        modalDeleteEvent = document.querySelector('.modal-delete-event'),
         modalClose = document.querySelector('.close-event'),
         modalCloudLeft = document.querySelector('.modal-cloud-left'),
         modalCloudRight = document.querySelector('.modal-cloud-right'),
-        addClose = document.querySelector('.close-add');
+        addClose = document.querySelector('.close-add'),
+        closeDelete = document.querySelector('.close-delete');
 
   //Переменные с кнопками модалки и инпутами (для ввода текста);
   const writeEvent = document.querySelector('#event'),
@@ -16,12 +18,19 @@ window.addEventListener('DOMContentLoaded', () => {
         writeNames = document.querySelector('#names'),
         btnEvent = document.querySelector('.btn-event'),
         btnAdd = document.querySelector('.btn-add'),
+        btnDelete = document.querySelector('.btn-delete'),
+        buttonEvent = document.querySelector('.button-event'),
+        buttonDelete = document.querySelector('.button-delete'),
         addEvent = document.querySelector('.add-event'),
-        addButton = document.querySelector('.to-add');
+        addButton = document.querySelector('.to-add'),
+        isEvent = document.querySelector('.is-event'),
+        isDate = document.querySelector('.is-date'),
+        personsNames = document.querySelector('.persons-names');
 
   //Переменные для полуаемого значения из инпута и для элемента куда присваивать;
   let text,
-      eventFields = document.querySelectorAll('.event');
+      eventFields = document.querySelectorAll('.event'),
+      namesFields = document.querySelectorAll('.peoples');
 
   //Создание переменных с актуальной (текущей) датой;
   let date = new Date(),
@@ -87,7 +96,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //Кнопки переключения месяцев (вперед и назад);
   const prevMonth = document.querySelector('.last-month'),
-        nextMonth = document.querySelector('.next-month');
+        nextMonth = document.querySelector('.next-month'),
+        toThatMonth = document.querySelector('.that-month');
 
   //Счетчики;
   let leftCount,
@@ -102,7 +112,7 @@ window.addEventListener('DOMContentLoaded', () => {
     text = element.value;
   }
 
-  //Функция генерации отображения переключаемой даты
+  //Функция генерации отображения переключаемой даты;
   function renderMonth(year) {
     thatDateName.textContent = `${monthNames[monthCopy]} ${year}`;
   }
@@ -131,7 +141,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setThatDate(fullDate);
   }
 
-  //Функция генерации количества високосных годов, которые нужно учитывать в календаре от 1972 года
+  //Функция генерации количества високосных годов, которые нужно учитывать в календаре от 1972 года;
   function generateEveryFourYears(count) {
     let someDate = new Date('1972-01-01'),
         someYear = someDate.getFullYear();
@@ -142,6 +152,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  //Функция для очистки классов на днях (при переключении месяцев) и создания первой недели в месяце;
   function createFirstWeek() {
 
     daysNumberArray = [];
@@ -159,21 +170,22 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  let countError = 0;
-
+  //Функция создания текущего месяца (вызывается единожды за скрипт);
   function createThatDays () {
     createMonth();
   }
 
+  //Функция создания месяцев;
   function createMonth() {
-    countError = 1;
     days.forEach((item, i) => {
       item.classList.remove('full-day');
+      item.classList.remove(localStorage.getItem(`Запись ${item.dataset.dataId}`));
       item.id = ``;
     });
 
     monthInDaysArray = [];
-    //Построение массивов с числами месяца начиная от первого дня месяца
+
+    // -- Построение массивов с числами месяца начиная от первого дня месяца;
     if (thatWeekDay === 0) {
       thatWeekDay = 7;
       for (let n = 1; n <= monthsOfYear[monthCopy]; n++) {
@@ -187,15 +199,16 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // -- Добавление [data-id] дням сгенерированного месяца и событий, сохранённых в localStorage;
     monthInDaysArray.forEach((item, i) => {
       item.dataset.dataId = `${i + 1}-${monthCopy + 1}-${yearCopy}`;
       item.classList.add('full-day');
-      eventFields[i + 5].textContent = localStorage.getItem(`${item.dataset.dataId}`);
+      eventFields[i + 5].textContent = localStorage.getItem(`Событие на ${item.dataset.dataId}`);
+      namesFields[i + 5].textContent = localStorage.getItem(`Участники на ${item.dataset.dataId}`);
+      item.classList.add(localStorage.getItem(`Запись ${item.dataset.dataId}`));
     });
 
-    checkDay();
-
-    //Нумерация массива чисел месяца
+    // -- Нумерация массива чисел месяца;
     daysNumberArray.forEach((elem, i) => {
       if (i === 0) {
         elem.textContent = `${(thatDay)}`;
@@ -204,15 +217,16 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // -- Разметка дней первой недели;
     for (let v = 0; v < firstWeekDays.length; v++) {
       if (v === thatWeekDay - 1) {
 
-        //Разметка дней первой недели после первого дня месяца
+        // ** Разметка дней первой недели после первого дня месяца
         for (let x = 1; x < (7 - v); x++) {
           firstWeekDays[v + x].textContent = `${weekdayNames[thatWeekDay + x - 1]}, ${thatDay + x}`;
         }
 
-        //Разметка в календаре дней предыдущего месяца
+        // ** Разметка в календаре дней предыдущего месяца
         for (let y = 1; y <= (7 - (7 - v)); y++) {
           if (monthCopy === 0) {
             firstWeekDays[v - y].textContent = `${weekdayNames[thatWeekDay - y - 1]}, ${monthsOfYear[11] - (y - 1)}`;
@@ -383,10 +397,18 @@ window.addEventListener('DOMContentLoaded', () => {
   function closeModal() {
     modalAddEvent.classList.remove('show');
     modalAddEvent.classList.add('hide');
+    modalDeleteEvent.classList.remove('show');
+    modalDeleteEvent.classList.add('hide');
+    monthInDaysArray.forEach((item, i) => {
+      item.classList.remove('checked');
+    });
+    days.forEach((item, i) => {
+      item.classList.remove('checked');
+    });
   }
 
   //localStorage
-
+  checkDay();
   function checkDay () {
 
     function addChecked(item) {
@@ -402,13 +424,38 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    function openModal() {
+    function openModalEvent() {
       modalAddEvent.classList.remove('hide');
       modalAddEvent.classList.add('show');
     }
 
+    function openModalDelete() {
+      modalDeleteEvent.classList.remove('hide');
+      modalDeleteEvent.classList.add('show');
+    }
+
+    function addNote(item, i) {
+      getValue(writeEvent);
+      localStorage.setItem(`Событие на ${item.dataset.dataId}`, text);
+      eventFields[i + 5].textContent = localStorage.getItem(`Событие на ${item.dataset.dataId}`);
+      getValue(writeNames);
+      localStorage.setItem(`Участники на ${item.dataset.dataId}`, text);
+      namesFields[i + 5].textContent = localStorage.getItem(`Участники на ${item.dataset.dataId}`);
+      localStorage.setItem(`Запись ${item.dataset.dataId}`, 'have-event');
+      item.classList.add(localStorage.getItem(`Запись ${item.dataset.dataId}`));
+    }
+
+    function deleteNote(item, i) {
+      localStorage.removeItem(`Событие на ${item.dataset.dataId}`);
+      eventFields[i + 5].textContent = '';
+      localStorage.removeItem(`Участники на ${item.dataset.dataId}`);
+      namesFields[i + 5].textContent = '';
+      item.classList.remove(localStorage.getItem(`Запись ${item.dataset.dataId}`));
+      localStorage.removeItem(`Запись ${item.dataset.dataId}`);
+    }
+
     monthInDaysArray.forEach((item, i) => {
-      item.addEventListener('click', (event) => {
+      item.addEventListener('click', () => {
         if (item.classList.contains('empty-day') || item.classList.contains('prev-day')) {
           return;
         }
@@ -418,24 +465,23 @@ window.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        if (countError > 1) {
-          return;
-        }
-
-        modalAddEvent.classList.remove('show');
-        modalAddEvent.classList.add('hide');
-        removeChecked(item);
+        removeChecked();
         addChecked(item);
+        closeModal();
 
         if (item.offsetLeft > 600) {
           modalAddEvent.style.left = `${item.offsetLeft - 345}px`;
           modalAddEvent.style.top = `${item.offsetTop - 20}px`;
+          modalDeleteEvent.style.left = `${item.offsetLeft - 345}px`;
+          modalDeleteEvent.style.top = `${item.offsetTop - 20}px`;
           modalClose.style.right = `285px`;
           modalCloudRight.classList.remove('hide');
           modalCloudLeft.classList.add('hide');
         } else {
           modalAddEvent.style.left = `${item.offsetLeft + 156}px`;
           modalAddEvent.style.top = `${item.offsetTop - 20}px`;
+          modalDeleteEvent.style.left = `${item.offsetLeft + 156}px`;
+          modalDeleteEvent.style.top = `${item.offsetTop - 20}px`;
           modalClose.style.right = `-17px`;
           modalCloudRight.classList.add('hide');
           modalCloudLeft.classList.remove('hide');
@@ -443,9 +489,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (item.offsetTop > 700) {
           modalAddEvent.style.top = `${item.offsetTop - 181}px`;
+          modalDeleteEvent.style.top = `${item.offsetTop - 181}px`;
           modalCloudLeft.style.top = `+161px`;
         } else if (item.offsetTop > 700 && item.offsetLeft > 600) {
           modalAddEvent.style.top = `${item.offsetTop - 181}px`;
+          modalDeleteEvent.style.top = `${item.offsetTop - 181}px`;
           modalCloudRight.classList.remove('hide');
           modalCloudLeft.classList.add('hide');
           modalCloudRight.style.top = `+161px`;
@@ -453,31 +501,62 @@ window.addEventListener('DOMContentLoaded', () => {
           modalCloudLeft.style.top = `0px`;
         }
 
-        openModal();
-        console.log(item.dataset.dataId);
+        writeEvent.value = '';
+        writeNames.value = '';
+
+        if (item.classList.contains('have-event')) {
+          openModalDelete();
+
+          isEvent.textContent = localStorage.getItem(`Событие на ${item.dataset.dataId}`);
+
+          if (monthCopy + 1 === 3 || monthCopy + 1 === 8) {
+            isDate.textContent = `${i + 1} ${monthNames[monthCopy].toLowerCase()}a`;
+          } else {
+            isDate.textContent = `${i + 1} ${monthNames[monthCopy].toLowerCase()}я`;
+          }
+          personsNames.textContent = localStorage.getItem(`Участники на ${item.dataset.dataId}`);
+
+        } else {
+          openModalEvent();
+        }
 
         btnEvent.addEventListener('click', () => {
-          getValue(writeEvent);
-          localStorage.setItem(`${item.dataset.dataId}`, text);
-          eventFields[i + 5].textContent = localStorage.getItem(`${item.dataset.dataId}`);
+          addNote(item, i);
           closeModal();
         });
-        countError++;
+
+        buttonEvent.addEventListener('click', () => {
+          addNote(item, i);
+          closeModal();
+        });
+
+        btnDelete.addEventListener('click', () => {
+          deleteNote(item, i);
+          closeModal();
+        });
+
+        buttonDelete.addEventListener('click', () => {
+          deleteNote(item, i);
+          closeModal();
+        });
       });
     });
 
     modalClose.addEventListener('click', () => {
       closeModal();
     });
+
+    closeDelete.addEventListener('click', () => {
+      closeModal();
+    });
   }
 
-  const toThatMonth = document.querySelector('.that-month');
-
+  //Возвращение на текущий месяц при нажатии кнопки 'Сегодня';
   toThatMonth.addEventListener('click', () => {
     renderThatMonth();
   });
 
-
+  //Добавление эффекта нажатия и 'отжатия' кнопки быстрого добавления событий;
   addButton.addEventListener('click', () => {
     addButton.classList.toggle('to-add__pushed');
     modalAddNote.classList.toggle('hide');
@@ -486,6 +565,22 @@ window.addEventListener('DOMContentLoaded', () => {
   addClose.addEventListener('click', () => {
     addButton.classList.toggle('to-add__pushed');
     modalAddNote.classList.toggle('hide');
+  });
+
+
+  //Быстрое добавление событий (до конца НЕ ДОДЕЛАНО, имеются ошибки);
+  btnAdd.addEventListener('click', () => {
+    getValue(addEvent);
+
+    text = text.split(' ');
+
+    let textDate = Number(text[0]);
+
+    localStorage.setItem(`Событие на ${monthInDaysArray[text[0]].dataset.dataId}`, text[1]);
+    eventFields[text[0]].textContent = localStorage.getItem(`Событие на ${monthInDaysArray[text[0]].dataset.dataId}`);
+    getValue(writeNames);
+    localStorage.setItem(`Запись ${monthInDaysArray[text[0]].dataset.dataId}`, 'have-event');
+    monthInDaysArray[text[0]].classList.add(localStorage.getItem(`Запись ${monthInDaysArray[text[0]].dataset.dataId}`));
   });
 
 });

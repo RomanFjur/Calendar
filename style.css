@@ -197,7 +197,12 @@ body {
 }
 
 .day-number,
-.event {
+.event,
+.peoples,
+.is-event,
+.is-date,
+.persons,
+.persons-names {
   display: block;
   margin: 0;
   padding: 0;
@@ -207,9 +212,15 @@ body {
   box-sizing: border-box;
 }
 
-.event {
+.event,
+.peoples {
+  width: 100px;
   padding-top: 5px;
   font-weight: bold;
+}
+
+.peoples {
+  font-weight: normal;
 }
 
 .that-day {
@@ -364,7 +375,8 @@ body {
   transform: rotate(-45deg);
 }
 
-.close-event {
+.close-event,
+.close-delete {
   top: -14px;
   right: -16px;
 }
@@ -413,6 +425,32 @@ body {
 
 .btn-add {
   margin-top: 10px;
+}
+
+.is-event {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.is-event,
+.is-date,
+.persons,
+.persons-names {
+  color: #000000;
+}
+
+.is-date,
+.persons-names {
+  font-size: 14px;
+}
+
+.persons {
+  font-size: 12px;
+  color: #757575;
+}
+
+.have-event {
+  background-color: #b8e0fb;
 }
 
 .show {

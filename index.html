@@ -279,7 +279,27 @@
           <textarea name="name" rows="8" cols="80" class="input-event" placeholder="Описание"></textarea>
           <div class="form-buttons">
             <button type="button" name="button" class="btn-out btn-event">Готово</button>
-            <button type="button" name="button" class="btn-out">Удалить</button>
+            <button type="button" name="button" class="btn-out btn-delete">Удалить</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-delete-event modal hide">
+        <form class="modal-form" action="index.html" method="post">
+          <span class="modal-cloud-left cloud"></span>
+          <span class="modal-cloud-right cloud hide"></span>
+          <button class="modal-close close-delete" type="button"></button>
+          <div class="input-wrapper">
+            <p class="is-event"></p>
+            <p class="is-date"></p>
+            <div class="div-persons">
+              <span class="persons">Участники:</span>
+              <p class="persons-names"></p>
+            </div>
+          </div>
+          <textarea name="name" rows="8" cols="80" class="input-event" placeholder="Описание"></textarea>
+          <div class="form-buttons">
+            <button type="button" name="button" class="btn-out button-event">Готово</button>
+            <button type="button" name="button" class="btn-out button-delete">Удалить</button>
           </div>
         </form>
       </div>
