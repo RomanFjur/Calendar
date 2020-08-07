@@ -170,7 +170,7 @@ window.addEventListener('DOMContentLoaded', () => {
     firstDaysArray.forEach((item, i) => {
       item.classList.add('full-day');
       item.id = `${i + 1}-${monthCopy + 1}-${yearCopy}`;
-      console.log(item.id);
+      eventOfDay[i + 5].textContent = localStorage.getItem(`${item.id}`);
     });
 
     checkDay();
@@ -234,7 +234,6 @@ window.addEventListener('DOMContentLoaded', () => {
     weekDays.forEach((item, i) => {
       parents[i].classList.remove('empty-day');
       parents[i].classList.remove('full-day');
-      parents[i].removeAttribute('id');
       if (item.lastChild === null) {
         parents[i].classList.add('empty-day');
         for (let e = 0; e < emptyCount; e++) {
@@ -243,7 +242,6 @@ window.addEventListener('DOMContentLoaded', () => {
         emptyCount++;
       } else if(!parents[i].classList.contains('prev-day')) {
         parents[i].classList.add('full-day');
-        parents[i].id = i;
       }
     });
 
@@ -392,6 +390,11 @@ window.addEventListener('DOMContentLoaded', () => {
     firstDaysArray.forEach((item, i) => {
       item.addEventListener('click', () => {
         if (item.classList.contains('empty-day') || item.classList.contains('prev-day')) {
+          return;
+        }
+
+        if (`${item.id}` != `${i}-${monthCopy}-${yearCopy}`) {
+          console.log(`${item.id}`, `${i + 1}-${monthCopy + 1}-${yearCopy}`);
           return;
         }
 
