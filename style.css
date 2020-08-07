@@ -16,8 +16,8 @@ body {
   padding: 0;
   padding-top: 60px;
   padding-bottom: 20px;
-  background-color: rgb(241, 241, 241);
-  box-shadow: 0px -2px 5px 4px rgba(168,166,168,1);
+  background-color: #f1f1f1;
+  box-shadow: 0px -2px 5px 4px #a8a6a8;
   box-sizing: border-box;
 }
 
@@ -49,7 +49,7 @@ body {
   text-shadow: 0px 1px 1px #00468e;
   font-family: 'Helvetica';
   font-size: 14px;
-  background-color: rgb(0, 103, 209);
+  background-color: #0067d1;
   border: none;
   border-radius: 3px;
   box-shadow: 0px 1.5px 2px 0px #b4babe;
@@ -95,11 +95,11 @@ body {
   font-size: 14px;
   border: none;
   border-radius: 3px;
-  box-shadow: inset 0px 1px 3px 1px rgba(168,166,168,1);
+  box-shadow: inset 0px 1px 3px 1px #a8a6a8;
 }
 
 .search::placeholder {
-  color: rgb(209, 209, 209);
+  color: #d1d1d1;
 }
 
 .page-main {
@@ -130,7 +130,7 @@ body {
   text-align: center;
   vertical-align: center;
   background-color: #ffffff;
-  box-shadow: inset 0px 0px 2px 1px rgba(168,166,168,1);
+  box-shadow: inset 0px 0px 2px 1px #a8a6a8;
   cursor: pointer;
 }
 
@@ -158,17 +158,17 @@ body {
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
-  border: 2px solid rgb(237, 237, 237);
-  border-top: 1px solid rgb(237, 237, 237);
+  border: 2px solid #ededed;
+  border-top: 1px solid #ededed;
   border-bottom: none;
 }
 
 .week:first-child {
-  border-top: 2px solid rgb(237, 237, 237);
+  border-top: 2px solid #ededed;
 }
 
 .week:last-child {
-  border-bottom: 2px solid rgb(237, 237, 237);
+  border-bottom: 2px solid #ededed;
 }
 
 .day {
@@ -177,13 +177,13 @@ body {
   margin: 0;
   padding: 0;
   font-size: 12px;
-  border-left: 1px solid rgb(237, 237, 237);
+  border-left: 1px solid #ededed;
   box-sizing: border-box;
 }
 
 .day:hover {
   cursor: pointer;
-  box-shadow: inset 0 0 0 2px rgb(106, 185, 249);
+  box-shadow: inset 0 0 0 2px #6ab9f9;
 }
 
 .day:first-of-type {
@@ -208,7 +208,7 @@ body {
   padding: 0;
   padding-top: 10px;
   padding-left: 10px;
-  color: rgb(173, 173, 173);
+  color: #adadad;
   box-sizing: border-box;
 }
 
@@ -225,12 +225,12 @@ body {
 
 .that-day {
   font-weight: bold;
-  background-color: rgb(241, 241, 241);
-  border: 1px solid rgb(236, 236, 236);
+  background-color: #f1f1f1;
+  border: 1px solid #ececec;
 }
 
 .checked {
-  background-color: rgb(227, 241, 251);
+  background-color: #e3f1fb;
 }
 
 .modal {
@@ -247,7 +247,7 @@ body {
   background-color: #ffffff;
   border: none;
   border-radius: 1px;
-  box-shadow: 0 1px 4px 2px rgba(168,166,168,1);
+  box-shadow: 0 1px 4px 2px #a8a6a8;
 }
 
 .modal-add-note {
@@ -286,7 +286,7 @@ body {
 }
 
 .cloud::before {
-  box-shadow: 0 1px 4px 2px rgba(168,166,168,1);
+  box-shadow: 0 1px 4px 2px #a8a6a8;
   transform: rotate(45deg);
 }
 
@@ -397,7 +397,7 @@ body {
   font-size: 14px;
   border: none;
   border-radius: 2px;
-  box-shadow: inset 0px 1px 3px 1px rgba(168,166,168,1);
+  box-shadow: inset 0px 1px 3px 1px #a8a6a8;
 }
 
 .input-event:last-of-type {
@@ -405,7 +405,7 @@ body {
 }
 
 .input-event::placeholder {
-  color: rgb(215, 215, 215);
+  color: #d7d7d7;
 }
 
 .form-buttons {

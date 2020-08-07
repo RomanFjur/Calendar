@@ -1,3 +1,7 @@
+// Календарь не доделан до конца (что именно описано ниже), однако, с вашего разрешения хотелось бы его в свободное время доделать (для себя). Тестовое задание оказалось для меня очень интересным, даже в день рождения не смог устоять от работы над ним.
+
+// За предоставленную возможность сделать это задание - СПАСИБО!
+
 'use strict';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -221,12 +225,12 @@ window.addEventListener('DOMContentLoaded', () => {
     for (let v = 0; v < firstWeekDays.length; v++) {
       if (v === thatWeekDay - 1) {
 
-        // ** Разметка дней первой недели после первого дня месяца
+        // ** Разметка дней первой недели после первого дня месяца;
         for (let x = 1; x < (7 - v); x++) {
           firstWeekDays[v + x].textContent = `${weekdayNames[thatWeekDay + x - 1]}, ${thatDay + x}`;
         }
 
-        // ** Разметка в календаре дней предыдущего месяца
+        // ** Разметка в календаре дней предыдущего месяца;
         for (let y = 1; y <= (7 - (7 - v)); y++) {
           if (monthCopy === 0) {
             firstWeekDays[v - y].textContent = `${weekdayNames[thatWeekDay - y - 1]}, ${monthsOfYear[11] - (y - 1)}`;
@@ -237,13 +241,13 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        //Разметка первого дня месяца
+        // ** Разметка первого дня месяца;
         firstWeekDays[v].textContent = `${weekdayNames[thatWeekDay - 1]}, ${thatDay}`;
         firstWeekDays[v].classList.add('first-day');
 
+      // ** Если первый день месяца по счету в массиве равен 0, то он становится равным 7 (далее чтобы стать Воскресеньем);
       } else if (thatWeekDay === 0) {
 
-        //Если первый день месяца по счету в массиве равен 0, то он становится равным 7 (далее чтобы стать Воскресеньем)
         thatWeekDay = 7;
 
         if (v === thatWeekDay - 1) {
@@ -253,7 +257,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    //Проверка текущей даты для удаления либо установления на календаре текущего дня
+    // -- Проверка текущей даты для удаления либо установления на календаре текущего дня;
     if (month === monthCopy && year === yearCopy) {
       showThatDay();
     } else {
@@ -263,7 +267,7 @@ window.addEventListener('DOMContentLoaded', () => {
     checkForEmpty();
   }
 
-  //Функция проверки пустого контента
+  //Функция проверки пустого контента;
   function checkForEmpty() {
     weekDays.forEach((item, i) => {
       days[i].classList.remove('empty-day');
@@ -281,12 +285,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
   }
 
+  //Функция сброса текущего дня;
   function resetThatDay(){
     monthInDaysArray.forEach((elem, i) => {
       elem.classList.remove('that-day');
     });
   }
 
+  //Функция показа текущего дня;
   function showThatDay() {
     monthInDaysArray.forEach((elem, i) => {
       if (i === day - 1) {
@@ -295,22 +301,25 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  //Генерация текущего месяца (при нажатии кнопки 'Сегодня');
   function renderThatMonth() {
+
     monthCopy = month;
     yearCopy = year;
     thatDateName.textContent = `${monthNames[month]} ${year}`;
+
     createThatMonth(month + 1);
     createFirstWeek();
     createMonth();
     showThatDay();
     closeModal();
+
     days.forEach((item, i) => {
       item.classList.remove('checked');
     });
   }
 
-  //Функция переключения месяца назад
-
+  //Функция переключения месяца назад;
   function renderPreviousMonth() {
     monthsOfYear[1] = 28;
     if (leftCount === 11) {
@@ -334,6 +343,7 @@ window.addEventListener('DOMContentLoaded', () => {
     createMonth();
   }
 
+  //Кнопка переключения месяца назад;
   prevMonth.addEventListener('click', () => {
 
     if (thatDateName.textContent === `${monthNames[0]} ${yearCopy}`) {
@@ -348,8 +358,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  //Функция переключения месяца вперед
-
+  //Функция переключения месяца вперед;
   function renderNextMonth() {
     monthsOfYear[1] = 28;
 
@@ -374,6 +383,7 @@ window.addEventListener('DOMContentLoaded', () => {
     createMonth();
   }
 
+  //Кнопка переключения месяца вперед;
   nextMonth.addEventListener('click', () => {
     if (thatDateName.textContent == `${monthNames[11]} ${yearCopy}`) {
       rightCount = 0;
@@ -386,6 +396,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  //ПРОЦЕСС генерации текущего месяца при загрузке страницы;
   renderMonth(year);
   generateEveryFourYears(20);
   createThatMonth(monthCopy + 1);
@@ -393,12 +404,15 @@ window.addEventListener('DOMContentLoaded', () => {
   createThatDays();
   showThatDay();
 
-  //ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ СОБЫТИЙ!!!!! (Далее)
+                            //ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ СОБЫТИЙ!!!!!
+
+  //Функция закрытия модалок;
   function closeModal() {
     modalAddEvent.classList.remove('show');
     modalAddEvent.classList.add('hide');
     modalDeleteEvent.classList.remove('show');
     modalDeleteEvent.classList.add('hide');
+
     monthInDaysArray.forEach((item, i) => {
       item.classList.remove('checked');
     });
@@ -407,14 +421,15 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  //localStorage
-  checkDay();
+  //Функция выбора и взаимодействия с днями месяца;
   function checkDay () {
 
+    // -- Добавление класса выбранного дня;
     function addChecked(item) {
       item.classList.add('checked');
     }
 
+    // -- Сброс класса выбранного дня;
     function removeChecked(item) {
       monthInDaysArray.forEach((item, i) => {
         item.classList.remove('checked');
@@ -424,16 +439,19 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // -- Открытие модального окна 'Добавления события';
     function openModalEvent() {
       modalAddEvent.classList.remove('hide');
       modalAddEvent.classList.add('show');
     }
 
+    // -- Открытие модального окна 'Удаление события';
     function openModalDelete() {
       modalDeleteEvent.classList.remove('hide');
       modalDeleteEvent.classList.add('show');
     }
 
+    // -- Функция добавления события;
     function addNote(item, i) {
       getValue(writeEvent);
       localStorage.setItem(`Событие на ${item.dataset.dataId}`, text);
@@ -445,6 +463,7 @@ window.addEventListener('DOMContentLoaded', () => {
       item.classList.add(localStorage.getItem(`Запись ${item.dataset.dataId}`));
     }
 
+    // -- Функция удаления события;
     function deleteNote(item, i) {
       localStorage.removeItem(`Событие на ${item.dataset.dataId}`);
       eventFields[i + 5].textContent = '';
@@ -454,12 +473,24 @@ window.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem(`Запись ${item.dataset.dataId}`);
     }
 
+    // -- Само добавление событий, выбора дней и открытия модальных окон;
+
+              // ** Далее происходит баги, которые так и не смог разобрать, а именно:
+              //    1. Итерация forEach происходит не один раз, а столько, сколько раз сколько переключен месяц;
+              //    2. Если не блокировать баг, то добавляемое событие вешается не только на день текущего месяца, но и на все сгенерированные ранее;
+              //    3. При нажатии нескольких дней, последующий ввод события добавит его на все 'Прощелкнутые' дни;
+              //    4. Не доделанны некоторые js-логики;
+
+
     monthInDaysArray.forEach((item, i) => {
       item.addEventListener('click', () => {
+
+        // ** Блокировка нажатия на дни, не относящиеся к текущему месяцу;
         if (item.classList.contains('empty-day') || item.classList.contains('prev-day')) {
           return;
         }
 
+        // ** Блокировка дней месяцев, и иными [data-id];
         if (`${item.dataset.dataId}` != `${i + 1}-${monthCopy + 1}-${yearCopy}`) {
           console.log(`${item.dataset.dataId}`, `${i + 1}-${monthCopy + 1}-${yearCopy}`);
           return;
@@ -469,6 +500,7 @@ window.addEventListener('DOMContentLoaded', () => {
         addChecked(item);
         closeModal();
 
+        // ** В зависимости от выбранного дня модалка меняет своё положение (по горизонтали);
         if (item.offsetLeft > 600) {
           modalAddEvent.style.left = `${item.offsetLeft - 345}px`;
           modalAddEvent.style.top = `${item.offsetTop - 20}px`;
@@ -487,6 +519,7 @@ window.addEventListener('DOMContentLoaded', () => {
           modalCloudLeft.classList.remove('hide');
         }
 
+        // ** В зависимости от выбранного дня модалка меняет своё положение (по вертикали);
         if (item.offsetTop > 700) {
           modalAddEvent.style.top = `${item.offsetTop - 181}px`;
           modalDeleteEvent.style.top = `${item.offsetTop - 181}px`;
@@ -501,9 +534,11 @@ window.addEventListener('DOMContentLoaded', () => {
           modalCloudLeft.style.top = `0px`;
         }
 
+        // ** Сброс текста в инпутах;
         writeEvent.value = '';
         writeNames.value = '';
 
+        // ** Если нажатие на день с внесенным событием, то открывается модальное окно удаления;
         if (item.classList.contains('have-event')) {
           openModalDelete();
 
@@ -520,6 +555,7 @@ window.addEventListener('DOMContentLoaded', () => {
           openModalEvent();
         }
 
+        // ** Обработчики событий 'Готово' и 'Удалить' в модалках;
         btnEvent.addEventListener('click', () => {
           addNote(item, i);
           closeModal();
@@ -542,6 +578,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // -- Закрытие модальных окон на кнопки;
     modalClose.addEventListener('click', () => {
       closeModal();
     });
@@ -583,4 +620,5 @@ window.addEventListener('DOMContentLoaded', () => {
     monthInDaysArray[text[0]].classList.add(localStorage.getItem(`Запись ${monthInDaysArray[text[0]].dataset.dataId}`));
   });
 
+  checkDay();
 });
