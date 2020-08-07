@@ -2,17 +2,35 @@
 
 window.addEventListener('DOMContentLoaded', () => {
 
-  const modalEvent = document.querySelector('.modal'),
+  //Создание переменных с псевдоелементами модального окна и самого модального окна;
+  const modalAddEvent = document.querySelector('.modal-create-event'),
+        modalAddNote = document.querySelector('.modal-add-note'),
         modalClose = document.querySelector('.close-event'),
         modalCloudLeft = document.querySelector('.modal-cloud-left'),
-        modalCloudRight = document.querySelector('.modal-cloud-right');
+        modalCloudRight = document.querySelector('.modal-cloud-right'),
+        addClose = document.querySelector('.close-add');
 
+  //Переменные с кнопками модалки и инпутами (для ввода текста);
+  const writeEvent = document.querySelector('#event'),
+        writeDate = document.querySelector('#date'),
+        writeNames = document.querySelector('#names'),
+        btnEvent = document.querySelector('.btn-event'),
+        btnAdd = document.querySelector('.btn-add'),
+        addEvent = document.querySelector('.add-event'),
+        addButton = document.querySelector('.to-add');
+
+  //Переменные для полуаемого значения из инпута и для элемента куда присваивать;
+  let text,
+      eventFields = document.querySelectorAll('.event');
+
+  //Создание переменных с актуальной (текущей) датой;
   let date = new Date(),
       year = date.getFullYear(),
       month = date.getMonth(),
       weekday = date.getDay(),
       day = date.getDate();
 
+  //Создание массива с названиями месяцев;
   const monthNames = [
     'Январь',
     'Февраль',
@@ -28,6 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
     'Декабрь'
   ];
 
+  //Создание массива с названиями дней недели;
   const weekdayNames = [
     'Понедельник',
     'Вторник',
@@ -38,58 +57,53 @@ window.addEventListener('DOMContentLoaded', () => {
     'Воскресенье'
   ];
 
-  //Далее функции создания первой недели в месяце, текущего месяца и последующих месяцев
+  //Создание псевдомассивов для дальнейшенй операций с днями, их именования и нумерации;
+  const firstWeek = document.querySelector('.first-week'),
+        firstWeekDays = firstWeek.querySelectorAll('.day-number'),
+        weekDays = document.querySelectorAll('.day-number'),
+        days = document.querySelectorAll('.day');
 
-  let firstWeek = document.querySelector('.first-week'),
-      firstWeekDays = firstWeek.querySelectorAll('.day-number'),
-      weekDays = document.querySelectorAll('.day-number');
-
+  //Создание переменных для дальнейшего установления и просчета календаря по датам (для Функции SetFirstDate);
   let firstDate,
       firstYear,
       firstWeekDay,
       firstDay,
-      firstMonth;
-
-  let newArray = [],
-      daysArray = [],
+      firstMonth,
       fullDate = '2020-08-01';
 
-  let moy = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //month of year
+  //Массивы для дальнейшего построения календаря;
+  let daysNumberArray = [],
+      monthInDaysArray = [];
 
+  //Массив дней в каждом месяце;
+  let monthsOfYear = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  //Копии текущего месяца и года для дальнейшего их изменения без изменения текущей даты;
   let monthCopy = month,
       yearCopy = year;
 
-  const element = document.querySelector('.today-month__date'),
-        psevdoParents = document.querySelectorAll('.day');
+  //Переменная отображаемой текущей даты;
+  const thatDateName = document.querySelector('.today-month__date');
 
-  let parents = Array.from(psevdoParents);
+  //Кнопки переключения месяцев (вперед и назад);
+  const prevMonth = document.querySelector('.last-month'),
+        nextMonth = document.querySelector('.next-month');
 
-  const writeEvent = document.querySelector('#event'),
-        writeDate = document.querySelector('#date'),
-        writeNames = document.querySelector('#names'),
-        addEvent = document.querySelector('.add-event'),
-        btnEvent = document.querySelector('.btn-event'),
-        btnAdd = document.querySelector('.btn-add');
+  //Счетчики;
+  let leftCount,
+      rightCount,
+      emptyCount;
 
-  let text,
-      eventOfDay = document.querySelectorAll('.event');
+  //Массив для подсчёта високосных годов;
+  let everyFourYears = [];
 
   function getValue(element) {
     text = element.value;
   }
 
   function renderMonth(year) {
-    element.textContent = `${monthNames[monthCopy]} ${year}`;
+    thatDateName.textContent = `${monthNames[monthCopy]} ${year}`;
   }
-
-  const prevMonth = document.querySelector('.last-month'),
-        nextMonth = document.querySelector('.next-month');
-
-  let leftCount,
-      rightCount,
-      emptyCount;
-
-  let highYears = [];
 
   function createThatMonth(a) {
     fullDate = fullDate.split('-');
@@ -110,8 +124,8 @@ window.addEventListener('DOMContentLoaded', () => {
         someYear = someDate.getFullYear();
 
     for (let i = 0; i < count; i++) {
-      highYears.push(someYear);
-      someYear = highYears[i] + 4;
+      everyFourYears.push(someYear);
+      someYear = everyFourYears[i] + 4;
     }
   }
 
@@ -124,12 +138,12 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   function createFirstWeek() {
-    newArray = [];
+    daysNumberArray = [];
 
     weekDays.forEach((elem, i) => {
       elem.textContent = ``;
-      parents[i].classList.remove('empty-day');
-      parents[i].classList.remove('prev-day');
+      days[i].classList.remove('empty-day');
+      days[i].classList.remove('prev-day');
       emptyCount = 1;
     });
 
@@ -139,44 +153,41 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  let firstDaysArray = [];
-
-  function createThatDays (arr) {
+  function createThatDays () {
     createMonth();
-    arr = [];
   }
 
   function createMonth() {
-    parents.forEach((item, i) => {
+    days.forEach((item, i) => {
       item.classList.remove('full-day');
       item.id = ``;
     });
 
-    firstDaysArray = [];
+    monthInDaysArray = [];
     //Построение массивов с числами месяца начиная от первого дня месяца
     if (firstWeekDay === 0) {
       firstWeekDay = 7;
-      for (let n = 1; n <= moy[monthCopy]; n++) {
-        newArray.push(weekDays[(firstWeekDay - 2) + n]);
-        firstDaysArray.push(parents[(firstWeekDay - 2) + n]);
+      for (let n = 1; n <= monthsOfYear[monthCopy]; n++) {
+        daysNumberArray.push(weekDays[(firstWeekDay - 2) + n]);
+        monthInDaysArray.push(days[(firstWeekDay - 2) + n]);
       }
     } else {
-      for (let i = 1; i <= moy[monthCopy]; i++) {
-        newArray.push(weekDays[(firstWeekDay - 2) + i]);
-        firstDaysArray.push(parents[(firstWeekDay - 2) + i]);
+      for (let i = 1; i <= monthsOfYear[monthCopy]; i++) {
+        daysNumberArray.push(weekDays[(firstWeekDay - 2) + i]);
+        monthInDaysArray.push(days[(firstWeekDay - 2) + i]);
       }
     }
 
-    firstDaysArray.forEach((item, i) => {
+    monthInDaysArray.forEach((item, i) => {
       item.classList.add('full-day');
       item.id = `${i + 1}-${monthCopy + 1}-${yearCopy}`;
-      eventOfDay[i + 5].textContent = localStorage.getItem(`${item.id}`);
+      eventFields[i + 5].textContent = localStorage.getItem(`${item.id}`);
     });
 
     checkDay();
 
     //Нумерация массива чисел месяца
-    newArray.forEach((elem, i) => {
+    daysNumberArray.forEach((elem, i) => {
       if (i === 0) {
         elem.textContent = `${(firstDay)}`;
       } else {
@@ -195,11 +206,11 @@ window.addEventListener('DOMContentLoaded', () => {
         //Разметка в календаре дней предыдущего месяца
         for (let y = 1; y <= (7 - (7 - v)); y++) {
           if (monthCopy === 0) {
-            firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[11] - (y - 1)}`;
-            parents[v - y].classList.add('prev-day');
+            firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${monthsOfYear[11] - (y - 1)}`;
+            days[v - y].classList.add('prev-day');
           } else {
-            firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${moy[monthCopy - 1] - (y - 1)}`;
-            parents[v - y].classList.add('prev-day');
+            firstWeekDays[v - y].textContent = `${weekdayNames[firstWeekDay - y - 1]}, ${monthsOfYear[monthCopy - 1] - (y - 1)}`;
+            days[v - y].classList.add('prev-day');
           }
         }
 
@@ -232,29 +243,29 @@ window.addEventListener('DOMContentLoaded', () => {
   //Функция проверки пустого контента
   function checkForEmpty() {
     weekDays.forEach((item, i) => {
-      parents[i].classList.remove('empty-day');
-      parents[i].classList.remove('full-day');
+      days[i].classList.remove('empty-day');
+      days[i].classList.remove('full-day');
       if (item.lastChild === null) {
-        parents[i].classList.add('empty-day');
+        days[i].classList.add('empty-day');
         for (let e = 0; e < emptyCount; e++) {
           item.textContent = `${firstDay + e}`;
         }
         emptyCount++;
-      } else if(!parents[i].classList.contains('prev-day')) {
-        parents[i].classList.add('full-day');
+      } else if(!days[i].classList.contains('prev-day')) {
+        days[i].classList.add('full-day');
       }
     });
 
   }
 
   function resetThatDay(){
-    firstDaysArray.forEach((elem, i) => {
+    monthInDaysArray.forEach((elem, i) => {
       elem.classList.remove('that-day');
     });
   }
 
   function showThatDay() {
-    firstDaysArray.forEach((elem, i) => {
+    monthInDaysArray.forEach((elem, i) => {
       if (i === day - 1) {
         elem.classList.add('that-day');
       }
@@ -264,13 +275,13 @@ window.addEventListener('DOMContentLoaded', () => {
   function renderThatMonth() {
     monthCopy = month;
     yearCopy = year;
-    element.textContent = `${monthNames[month]} ${year}`;
+    thatDateName.textContent = `${monthNames[month]} ${year}`;
     createThatMonth(month + 1);
     createFirstWeek();
-    createMonth(firstDaysArray);
+    createMonth();
     showThatDay();
     closeModal();
-    parents.forEach((item, i) => {
+    days.forEach((item, i) => {
       item.classList.remove('checked');
     });
   }
@@ -278,7 +289,7 @@ window.addEventListener('DOMContentLoaded', () => {
   //Функция переключения месяца назад
 
   function renderPreviousMonth() {
-    moy[1] = 28;
+    monthsOfYear[1] = 28;
     if (leftCount === 11) {
       renderMonth(yearCopy - 1);
       leftCount--;
@@ -290,26 +301,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
     createThatMonth(monthCopy + 1);
 
-    highYears.forEach((item, i) => {
+    everyFourYears.forEach((item, i) => {
       if (yearCopy === item) {
-        moy[1] = 29;
+        monthsOfYear[1] = 29;
       }
     });
 
     createFirstWeek();
-    createMonth(firstDaysArray);
+    createMonth();
   }
 
   prevMonth.addEventListener('click', () => {
 
-    if (element.textContent === `${monthNames[0]} ${yearCopy}`) {
+    if (thatDateName.textContent === `${monthNames[0]} ${yearCopy}`) {
       leftCount = 11;
       monthCopy = leftCount;
     }
     renderPreviousMonth();
     checkDay();
     closeModal();
-    parents.forEach((item, i) => {
+    days.forEach((item, i) => {
       item.classList.remove('checked');
     });
   });
@@ -317,7 +328,7 @@ window.addEventListener('DOMContentLoaded', () => {
   //Функция переключения месяца вперед
 
   function renderNextMonth() {
-    moy[1] = 28;
+    monthsOfYear[1] = 28;
 
     if (rightCount === 0) {
       renderMonth(yearCopy + 1);
@@ -330,24 +341,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
     createThatMonth(monthCopy + 1);
 
-    highYears.forEach((item, i) => {
+    everyFourYears.forEach((item, i) => {
       if (yearCopy === item) {
-        moy[1] = 29;
+        monthsOfYear[1] = 29;
       }
     });
 
     createFirstWeek();
-    createMonth(firstDaysArray);
+    createMonth();
   }
 
   nextMonth.addEventListener('click', () => {
-    if (element.textContent == `${monthNames[11]} ${yearCopy}`) {
+    if (thatDateName.textContent == `${monthNames[11]} ${yearCopy}`) {
       rightCount = 0;
       monthCopy = rightCount;
     }
     renderNextMonth();
     closeModal();
-    parents.forEach((item, i) => {
+    days.forEach((item, i) => {
       item.classList.remove('checked');
     });
   });
@@ -356,13 +367,13 @@ window.addEventListener('DOMContentLoaded', () => {
   generateHighYears(20);
   setFirstDate(fullDate);
   createFirstWeek();
-  createThatDays(firstDaysArray);
+  createThatDays();
   showThatDay();
 
   //ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ СОБЫТИЙ!!!!! (Далее)
   function closeModal() {
-    modalEvent.classList.remove('show');
-    modalEvent.classList.add('hide');
+    modalAddEvent.classList.remove('show');
+    modalAddEvent.classList.add('hide');
   }
 
   //localStorage
@@ -374,20 +385,20 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function removeChecked(item) {
-      firstDaysArray.forEach((item, i) => {
+      monthInDaysArray.forEach((item, i) => {
         item.classList.remove('checked');
       });
-      parents.forEach((item, i) => {
+      days.forEach((item, i) => {
         item.classList.remove('checked');
       });
     }
 
     function openModal() {
-      modalEvent.classList.remove('hide');
-      modalEvent.classList.add('show');
+      modalAddEvent.classList.remove('hide');
+      modalAddEvent.classList.add('show');
     }
 
-    firstDaysArray.forEach((item, i) => {
+    monthInDaysArray.forEach((item, i) => {
       item.addEventListener('click', () => {
         if (item.classList.contains('empty-day') || item.classList.contains('prev-day')) {
           return;
@@ -398,30 +409,30 @@ window.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        modalEvent.classList.remove('show');
-        modalEvent.classList.add('hide');
+        modalAddEvent.classList.remove('show');
+        modalAddEvent.classList.add('hide');
         removeChecked(item);
         addChecked(item);
 
         if (item.offsetLeft > 600) {
-          modalEvent.style.left = `${item.offsetLeft - 345}px`;
-          modalEvent.style.top = `${item.offsetTop - 20}px`;
+          modalAddEvent.style.left = `${item.offsetLeft - 345}px`;
+          modalAddEvent.style.top = `${item.offsetTop - 20}px`;
           modalClose.style.right = `285px`;
           modalCloudRight.classList.remove('hide');
           modalCloudLeft.classList.add('hide');
         } else {
-          modalEvent.style.left = `${item.offsetLeft + 156}px`;
-          modalEvent.style.top = `${item.offsetTop - 20}px`;
+          modalAddEvent.style.left = `${item.offsetLeft + 156}px`;
+          modalAddEvent.style.top = `${item.offsetTop - 20}px`;
           modalClose.style.right = `-17px`;
           modalCloudRight.classList.add('hide');
           modalCloudLeft.classList.remove('hide');
         }
 
         if (item.offsetTop > 700) {
-          modalEvent.style.top = `${item.offsetTop - 181}px`;
+          modalAddEvent.style.top = `${item.offsetTop - 181}px`;
           modalCloudLeft.style.top = `+161px`;
         } else if (item.offsetTop > 700 && item.offsetLeft > 600) {
-          modalEvent.style.top = `${item.offsetTop - 181}px`;
+          modalAddEvent.style.top = `${item.offsetTop - 181}px`;
           modalCloudRight.classList.remove('hide');
           modalCloudLeft.classList.add('hide');
           modalCloudRight.style.top = `+161px`;
@@ -435,7 +446,7 @@ window.addEventListener('DOMContentLoaded', () => {
         btnEvent.addEventListener('click', () => {
           getValue(writeEvent);
           localStorage.setItem(`${item.id}`, text);
-          eventOfDay[i + 5].textContent = localStorage.getItem(`${item.id}`);
+          eventFields[i + 5].textContent = localStorage.getItem(`${item.id}`);
           closeModal();
         });
       });
@@ -452,18 +463,15 @@ window.addEventListener('DOMContentLoaded', () => {
     renderThatMonth();
   });
 
-  const addButton = document.querySelector('.to-add'),
-        addNote = document.querySelector('.modal-add-note'),
-        addClose = document.querySelector('.close-add');
 
   addButton.addEventListener('click', () => {
     addButton.classList.toggle('to-add__pushed');
-    addNote.classList.toggle('hide');
+    modalAddNote.classList.toggle('hide');
   });
 
   addClose.addEventListener('click', () => {
     addButton.classList.toggle('to-add__pushed');
-    addNote.classList.toggle('hide');
+    modalAddNote.classList.toggle('hide');
   });
 
 });
