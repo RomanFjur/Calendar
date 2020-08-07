@@ -170,6 +170,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     monthInDaysArray = [];
+
     //Построение массивов с числами месяца начиная от первого дня месяца
     if (thatWeekDay === 0) {
       thatWeekDay = 7;
@@ -261,7 +262,6 @@ window.addEventListener('DOMContentLoaded', () => {
         days[i].classList.add('full-day');
       }
     });
-
   }
 
   function resetThatDay(){
@@ -381,8 +381,6 @@ window.addEventListener('DOMContentLoaded', () => {
     modalAddEvent.classList.remove('show');
     modalAddEvent.classList.add('hide');
   }
-
-  //localStorage
 
   function checkDay () {
 
