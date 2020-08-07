@@ -159,18 +159,20 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  let countError = 0;
+
   function createThatDays () {
     createMonth();
   }
 
   function createMonth() {
+    countError = 1;
     days.forEach((item, i) => {
       item.classList.remove('full-day');
       item.id = ``;
     });
 
     monthInDaysArray = [];
-
     //Построение массивов с числами месяца начиная от первого дня месяца
     if (thatWeekDay === 0) {
       thatWeekDay = 7;
@@ -186,9 +188,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     monthInDaysArray.forEach((item, i) => {
+      item.dataset.dataId = `${i + 1}-${monthCopy + 1}-${yearCopy}`;
       item.classList.add('full-day');
-      item.id = `${i + 1}-${monthCopy + 1}-${yearCopy}`;
-      eventFields[i + 5].textContent = localStorage.getItem(`${item.id}`);
+      eventFields[i + 5].textContent = localStorage.getItem(`${item.dataset.dataId}`);
     });
 
     checkDay();
@@ -262,6 +264,7 @@ window.addEventListener('DOMContentLoaded', () => {
         days[i].classList.add('full-day');
       }
     });
+
   }
 
   function resetThatDay(){
@@ -382,6 +385,8 @@ window.addEventListener('DOMContentLoaded', () => {
     modalAddEvent.classList.add('hide');
   }
 
+  //localStorage
+
   function checkDay () {
 
     function addChecked(item) {
@@ -403,13 +408,17 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     monthInDaysArray.forEach((item, i) => {
-      item.addEventListener('click', () => {
+      item.addEventListener('click', (event) => {
         if (item.classList.contains('empty-day') || item.classList.contains('prev-day')) {
           return;
         }
 
-        if (`${item.id}` != `${i + 1}-${monthCopy + 1}-${yearCopy}`) {
-          console.log(`${item.id}`, `${i + 1}-${monthCopy + 1}-${yearCopy}`);
+        if (`${item.dataset.dataId}` != `${i + 1}-${monthCopy + 1}-${yearCopy}`) {
+          console.log(`${item.dataset.dataId}`, `${i + 1}-${monthCopy + 1}-${yearCopy}`);
+          return;
+        }
+
+        if (countError > 1) {
           return;
         }
 
@@ -445,14 +454,15 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         openModal();
-        console.log(item.id);
+        console.log(item.dataset.dataId);
 
         btnEvent.addEventListener('click', () => {
           getValue(writeEvent);
-          localStorage.setItem(`${item.id}`, text);
-          eventFields[i + 5].textContent = localStorage.getItem(`${item.id}`);
+          localStorage.setItem(`${item.dataset.dataId}`, text);
+          eventFields[i + 5].textContent = localStorage.getItem(`${item.dataset.dataId}`);
           closeModal();
         });
+        countError++;
       });
     });
 
